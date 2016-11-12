@@ -6,7 +6,7 @@
 	<select id="selectByPrimaryKey" parameterType="map" resultType="hashmap">
     select 
     <foreach item="columnName" index="index" collection="queryColumn" separator="," >
-        #{columnName}
+        ${columnName}
     </foreach>
     from ${tableName}
     where ${primaryKey} = #{primaryValue}
@@ -42,10 +42,14 @@
 	<select id="selectByCondition" parameterType="map" resultType="hashmap">
     select 
      <foreach item="columnName" index="index" collection="queryColumn" separator="," >
-        #{columnName}
+        ${columnName}
     </foreach>
     from ${tableName}
-    where ${conditionExp}
+    <where>
+    <if test="conditionExp != null" >
+    ${conditionExp}
+    </if>
+    </where> 
     
     <if test="page != null" >
     limit #{page.startRowNo},#{page.pageSize}
