@@ -4,11 +4,12 @@
 <mapper namespace="com.svili.portal.dao.GeneralDao">
 
 	<select id="selectByPrimaryKey" parameterType="map" resultType="hashmap">
-    <![CDATA[
-    select ${queryColumn}
+    select 
+    <foreach item="columnName" index="index" collection="queryColumn" separator="," >
+        #{columnName}
+    </foreach>
     from ${tableName}
     where ${primaryKey} = #{primaryValue}
-    ]]>
 	</select>
 	
 	<delete id="deleteByPrimaryKey" parameterType="map">
@@ -17,5 +18,43 @@
     where ${primaryKey} = #{primaryValue}
     ]]>
 	</delete>
+	
+	<update id="updateByPrimaryKey">
+	update ${tableName}
+	 <set >
+     <foreach item="columnValue" index="columnName" collection="columnValueMapping" separator="," >
+        ${columnName} = #{columnValue}
+    </foreach>
+    </set>
+    where ${primaryKey} = #{primaryValue}
+	</update>
+	
+	<update id="updateByPrimaryKeySelective">
+	update ${tableName}
+	 <set >
+     <foreach item="columnValue" index="columnName" collection="columnValueMapping" separator="," >
+        ${columnName} = #{columnValue}
+    </foreach>
+    </set>
+    where ${primaryKey} = #{primaryValue}
+	</update>
+	
+	<select id="selectByCondition" parameterType="map" resultType="hashmap">
+    select 
+     <foreach item="columnName" index="index" collection="queryColumn" separator="," >
+        #{columnName}
+    </foreach>
+    from ${tableName}
+    where ${conditionExp}
+    
+    <if test="page != null" >
+    limit #{page.startRowNo},#{page.pageSize}
+    </if>
+    
+    <if test="orderColumn != null" >
+    order by ${orderColumn}
+    </if>
+    
+	</select>
 	
 </mapper>

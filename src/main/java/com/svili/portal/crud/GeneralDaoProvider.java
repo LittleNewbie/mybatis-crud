@@ -21,6 +21,7 @@ public class GeneralDaoProvider {
 		}.toString();
 	}
 
+	@Deprecated
 	public String updateByPrimaryKeySql(final Map<String, Object> param) {
 		return new SQL() {
 			{

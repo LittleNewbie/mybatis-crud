@@ -9,7 +9,7 @@ import com.svili.portal.type.DataState;
 
 /**
  * 用户信息
- * @author lishiwei
+ * @author svili
  * @date 2016年8月10日
  *
  */
