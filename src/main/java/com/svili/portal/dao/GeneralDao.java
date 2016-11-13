@@ -19,20 +19,23 @@ public interface GeneralDao {
 	
 	Map<String,Object> selectByPrimaryKey(Map<String,Object> param);
 	
-	List<Map<String,Object>> selectByCondition(Map<String,Object> param);
-	
 	int deleteByPrimaryKey(Map<String,Object> param);
+	
+	int deleteByCondition(Map<String,Object> param);
 	
 	@InsertProvider(type=GeneralDaoProvider.class,method="insertSelectiveSql")
 	int insert(Map<String,Object> param);
 	
-	@InsertProvider(type=GeneralDaoProvider.class,method="insertSelectiveSql")
 	int insertSelective(Map<String,Object> param);
+	
+	int insertBatch(Map<String,Object> param);
 	
 	int updateByPrimaryKeySelective(Map<String,Object> param);
 
     int updateByPrimaryKey(Map<String,Object> param);
+    
+    int updateByConditionSelective(Map<String,Object> param);
 	
-	Map<String,Object> selectTest(Map<String,Object> param);
+	List<Map<String,Object>> selectAdvanced(Map<String,Object> param);
     
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 public class GeneralDaoProvider {
 
+	@Deprecated
 	public String insertSelectiveSql(final Map<String, Object> param) {
 		return new SQL() {
 			{
@@ -38,5 +39,5 @@ public class GeneralDaoProvider {
 			}
 		}.toString();
 	}
-	
+
 }

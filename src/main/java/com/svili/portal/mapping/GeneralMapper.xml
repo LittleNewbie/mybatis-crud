@@ -4,61 +4,115 @@
 <mapper namespace="com.svili.portal.dao.GeneralDao">
 
 	<select id="selectByPrimaryKey" parameterType="map" resultType="hashmap">
-    select 
-    <foreach item="columnName" index="index" collection="queryColumn" separator="," >
-        ${columnName}
-    </foreach>
-    from ${tableName}
-    where ${primaryKey} = #{primaryValue}
+		select
+		<foreach item="columnName" index="index" collection="queryColumn"
+			separator=",">
+			${columnName}
+		</foreach>
+		from ${tableName}
+		where ${primaryKey} = #{primaryValue}
 	</select>
 	
+	<insert id="insertSelective" parameterType="Link">
+		insert into ${tableName}
+		<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+			open="(" separator="," close=")">
+			${columnName}
+		</foreach>
+		values
+		<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+			open="(" separator="," close=")">
+				#{columnValue}
+		</foreach>
+	</insert>
+
+	<insert id="insertBatch" parameterType="Link">
+		insert into ${tableName}
+		<foreach item="columnName" index="index" collection="columns"
+			open="(" separator="," close=")">
+			${columnName}
+		</foreach>
+		values
+		<foreach item="rowMapping" index="index" collection="dataList"
+			separator=",">
+			<foreach item="columnValue" index="columnName" collection="rowMapping"
+				open="(" separator="," close=")">
+				#{columnValue}
+			</foreach>
+		</foreach>
+	</insert>
+
 	<delete id="deleteByPrimaryKey" parameterType="map">
     <![CDATA[
     delete from ${tableName}
     where ${primaryKey} = #{primaryValue}
     ]]>
 	</delete>
-	
+
+	<delete id="deleteByCondition" parameterType="map">
+    <![CDATA[
+    delete from ${tableName}
+    where ${conditionExp}
+    ]]>
+	</delete>
+
 	<update id="updateByPrimaryKey">
-	update ${tableName}
-	 <set >
-     <foreach item="columnValue" index="columnName" collection="columnValueMapping" separator="," >
-        ${columnName} = #{columnValue}
-    </foreach>
-    </set>
-    where ${primaryKey} = #{primaryValue}
+		update ${tableName}
+		<set>
+			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+				separator=",">
+				${columnName} = #{columnValue}
+			</foreach>
+		</set>
+		where ${primaryKey} = #{primaryValue}
 	</update>
-	
+
 	<update id="updateByPrimaryKeySelective">
-	update ${tableName}
-	 <set >
-     <foreach item="columnValue" index="columnName" collection="columnValueMapping" separator="," >
-        ${columnName} = #{columnValue}
-    </foreach>
-    </set>
-    where ${primaryKey} = #{primaryValue}
+		update ${tableName}
+		<set>
+			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+				separator=",">
+				${columnName} = #{columnValue}
+			</foreach>
+		</set>
+		where ${primaryKey} = #{primaryValue}
 	</update>
-	
-	<select id="selectByCondition" parameterType="map" resultType="hashmap">
-    select 
-     <foreach item="columnName" index="index" collection="queryColumn" separator="," >
-        ${columnName}
-    </foreach>
-    from ${tableName}
-    <where>
-    <if test="conditionExp != null" >
-    ${conditionExp}
-    </if>
-    </where> 
-    
-    <if test="page != null" >
-    limit #{page.startRowNo},#{page.pageSize}
-    </if>
-    
-    <if test="orderColumn != null" >
-    order by ${orderColumn}
-    </if>
-    
+
+	<update id="updateByConditionSelective">
+		update ${tableName}
+		<set>
+			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+				separator=",">
+				${columnName} = #{columnValue}
+			</foreach>
+		</set>
+		<where>
+			<if test="conditionExp != null">
+				${conditionExp}
+			</if>
+		</where>
+	</update>
+
+	<select id="selectAdvanced" parameterType="map" resultType="hashmap">
+		select
+		<foreach item="columnName" index="index" collection="queryColumn"
+			separator=",">
+			${columnName}
+		</foreach>
+		from ${tableName}
+		<where>
+			<if test="conditionExp != null">
+				${conditionExp}
+			</if>
+		</where>
+
+		<if test="orderExp != null">
+			order by ${orderExp}
+		</if>
+
+		<if test="page != null">
+			limit #{page.startRowNo},#{page.pageSize}
+		</if>
 	</select>
-	
+
 </mapper>
