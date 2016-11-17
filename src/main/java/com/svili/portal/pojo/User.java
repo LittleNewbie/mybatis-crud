@@ -9,6 +9,7 @@ import com.svili.portal.type.DataState;
 
 /**
  * 用户信息
+ * <p>@Table和Id是必须的</p>
  * @author svili
  * @date 2016年8月10日
  *
@@ -39,6 +40,10 @@ public class User {
 	private Integer orderId;
 	
 	private DataState state;
+	
+	private java.util.Date createTime;
+	
+	private java.util.Date updateTime;
 
 	public User() {
 	}
@@ -132,6 +137,22 @@ public class User {
 	public void setState(DataState state) {
 		this.state = state;
 	}
+	
+	public java.util.Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(java.util.Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public java.util.Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(java.util.Date updateTime) {
+		this.updateTime = updateTime;
+	}
 
 	@Override
 	public int hashCode() {
@@ -162,7 +183,8 @@ public class User {
 	public String toString() {
 		return "User [userId=" + userId + ", deptId=" + deptId + ", userName=" + userName + ", loginName=" + loginName
 				+ ", password=" + password + ", mobilePhone=" + mobilePhone + ", officePhone=" + officePhone
-				+ ", email=" + email + ", job=" + job + ", orderId=" + orderId + ", state=" + state + "]";
+				+ ", email=" + email + ", job=" + job + ", orderId=" + orderId + ", state=" + state + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + "]";
 	}
-	
+
 }

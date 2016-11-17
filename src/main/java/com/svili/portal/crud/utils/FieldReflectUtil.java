@@ -5,6 +5,13 @@ import java.lang.reflect.Field;
 
 import org.springframework.util.ReflectionUtils;
 
+/**
+ * 反射工具类
+ * <p>字段</p>
+ * @author svili
+ * @date 2016年11月17日
+ *
+ */
 public class FieldReflectUtil {
 
 	/**
@@ -71,7 +78,13 @@ public class FieldReflectUtil {
 		if (value != null) {
 			if (field.getType().isEnum()) {
 				return Integer.toString(EnumFieldReflectUtil.getFieldEnumOrdinal(t, field));
-			} else {
+			} if(field.getType().equals(java.util.Date.class)){
+				//yyyy-MM-dd HH:mm:ss
+				return DateUtil.formatAll((java.util.Date)value);
+			}if(field.getType().equals(java.sql.Date.class)){
+				//yyyy-MM-dd
+				return DateUtil.format((java.sql.Date)value);
+			}else {
 				return value.toString();
 			}
 		} else {
