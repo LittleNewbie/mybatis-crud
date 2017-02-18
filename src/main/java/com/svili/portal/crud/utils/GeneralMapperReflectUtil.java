@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import org.apache.ibatis.reflection.ReflectionException;
 import org.springframework.util.ReflectionUtils;
 
+import com.svili.portal.crud.common.StringUtil;
+
 /**
  * 映射工具类
  * 
@@ -151,9 +153,6 @@ public class GeneralMapperReflectUtil {
 	 * <p>
 	 * 字段名为下划线风格
 	 * </p>
-	 * <p>
-	 * 字段值为String类型
-	 * </p>
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -163,13 +162,13 @@ public class GeneralMapperReflectUtil {
 	 * @return columnName-value
 	 * @throws Exception
 	 */
-	public static <T> Map<String, String> getFieldValueMappingExceptNull(T t) throws Exception {
-		Map<String, String> mapping = new LinkedHashMap<String, String>();
+	public static <T> Map<String, Object> getFieldValueMappingExceptNull(T t) throws Exception {
+		Map<String, Object> mapping = new LinkedHashMap<String, Object>();
 
 		Field[] fields = t.getClass().getDeclaredFields();
 
 		for (Field field : fields) {
-			String fieldValue = FieldReflectUtil.getFieldStringValue(t, field);
+			Object fieldValue = FieldReflectUtil.getFieldValue(t, field);
 			if (fieldValue != null) {
 				mapping.put(StringUtil.camelToUnderline(field.getName()), fieldValue);
 			}
@@ -183,9 +182,6 @@ public class GeneralMapperReflectUtil {
 	 * <p>
 	 * 字段名为下划线风格
 	 * </p>
-	 * <p>
-	 * 字段值为String类型
-	 * </p>
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -196,13 +192,13 @@ public class GeneralMapperReflectUtil {
 	 * @throws Exception
 	 * @see getFieldStringValue
 	 */
-	public static <T> Map<String, String> getAllFieldValueMapping(T t) throws Exception {
-		Map<String, String> mapping = new LinkedHashMap<String, String>();
+	public static <T> Map<String, Object> getAllFieldValueMapping(T t) throws Exception {
+		Map<String, Object> mapping = new LinkedHashMap<String, Object>();
 
 		Field[] fields = t.getClass().getDeclaredFields();
 
 		for (Field field : fields) {
-			String fieldValue = FieldReflectUtil.getFieldStringValue(t, field);
+			Object fieldValue = FieldReflectUtil.getFieldValue(t, field);
 			mapping.put(StringUtil.camelToUnderline(field.getName()), fieldValue);
 		}
 
@@ -213,9 +209,6 @@ public class GeneralMapperReflectUtil {
 	 * 获取pojo字段名-字段值mapping
 	 * <p>
 	 * 字段名为下划线风格
-	 * </p>
-	 * <p>
-	 * 字段值为String类型
 	 * </p>
 	 * 
 	 * @param <T>
@@ -230,9 +223,9 @@ public class GeneralMapperReflectUtil {
 	 * @return columnName-value
 	 * @throws Exception
 	 */
-	public static <T> Map<String, String> getFieldValueMapping(T t, boolean isContainsPrimaryKey,
+	public static <T> Map<String, Object> getFieldValueMapping(T t, boolean isContainsPrimaryKey,
 			boolean isContainsNullValue) throws Exception {
-		Map<String, String> mapping = new LinkedHashMap<String, String>();
+		Map<String, Object> mapping = new LinkedHashMap<String, Object>();
 
 		List<Field> fields = Arrays.asList(t.getClass().getDeclaredFields());
 
@@ -246,7 +239,7 @@ public class GeneralMapperReflectUtil {
 
 		for (Field field : fields) {
 			// 字段值
-			String fieldValue = FieldReflectUtil.getFieldStringValue(t, field);
+			Object fieldValue = FieldReflectUtil.getFieldValue(t, field);
 
 			if (fieldValue == null) {
 				// 空值
@@ -277,15 +270,19 @@ public class GeneralMapperReflectUtil {
 	 */
 	public static <T> T parseToBean(Map<String, Object> mapping, Class<T> clazz) throws Exception {
 		T t = clazz.newInstance();
-		for (Entry<String, Object> entry : mapping.entrySet()) {
+		if (mapping != null) {
+			for (Entry<String, Object> entry : mapping.entrySet()) {
 
-			// 字段名 下划线转为驼峰风格
-			String fieldName = StringUtil.underlineToCamel(entry.getKey());
+				// oracle返回的columnName为大写
+				String columnName = entry.getKey().toLowerCase();
+				// 字段名 下划线转为驼峰风格
+				String fieldName = StringUtil.underlineToCamel(columnName);
 
-			Field field = ReflectionUtils.findField(clazz, fieldName);
+				Field field = ReflectionUtils.findField(clazz, fieldName);
 
-			if (field != null) {
-				FieldReflectUtil.setFieldValue(t, field, entry.getValue());
+				if (field != null) {
+					FieldReflectUtil.setFieldValue(t, field, entry.getValue());
+				}
 			}
 		}
 		return t;

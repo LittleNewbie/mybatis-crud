@@ -5,9 +5,15 @@ import java.lang.reflect.Field;
 
 import org.springframework.util.ReflectionUtils;
 
+import com.svili.portal.crud.common.DateUtil;
+import com.svili.portal.crud.common.NumberUtil;
+
 /**
  * 反射工具类
- * <p>字段</p>
+ * <p>
+ * 字段
+ * </p>
+ * 
  * @author svili
  * @date 2016年11月17日
  *
@@ -26,11 +32,37 @@ public class FieldReflectUtil {
 	 */
 	public static <T> void setFieldValue(T t, Field field, Object value) throws Exception {
 		ReflectionUtils.makeAccessible(field);
+		// Enum类型字段处理
 		if (field.getType().isEnum()) {
-			EnumFieldReflectUtil.setFieldEnumValueByOrdinal(t, field, (int) value);
-		} else {
-			field.set(t, value);
+			// oracle Number类型返回的是BigDecimal
+			if (value instanceof Number) {
+				int ordinal = NumberUtil.toInt((Number) value);
+				EnumFieldReflectUtil.setFieldEnumValueByOrdinal(t, field, ordinal);
+			}
+			return;
 		}
+		// Boolean类型字段处理
+		if (field.getType().equals(Boolean.class)) {
+			if (value instanceof Number) {
+				boolean b = NumberUtil.toInt((Number) value) == 1;
+				field.set(t, b);
+			}else{
+				field.set(t, value);
+			}
+			return;
+		}
+		// Number类型字段处理
+		if (value instanceof Number) {
+			// oracle中Number类型返回的是BigDecimal
+			NumberFieldReflectUtil.setFieldNumberValue(t, field, (Number) value);
+			return;
+		}
+		//Date类型字段处理
+		if (value instanceof java.util.Date) {
+			DateFieldReflectUtil.setFieldDateValue(t, field, (java.util.Date) value);
+			return;
+		}
+		field.set(t, value);
 	}
 
 	/**
@@ -49,11 +81,14 @@ public class FieldReflectUtil {
 	 */
 	public static <T> Object getFieldValue(T t, Field field) throws Exception {
 		ReflectionUtils.makeAccessible(field);
-		if (field.get(t) != null) {
-			return field.get(t);
-		} else {
+		if (field.get(t) == null) {
 			return null;
 		}
+		// Enum类型字段处理
+		if (field.getType().isEnum()) {
+			return EnumFieldReflectUtil.getFieldEnumOrdinal(t, field);
+		}
+		return field.get(t);
 	}
 
 	/**
@@ -73,18 +108,21 @@ public class FieldReflectUtil {
 	 * @throws Exception
 	 *             IllegalArgumentException, IllegalAccessException
 	 */
+	@Deprecated
 	public static <T> String getFieldStringValue(T t, Field field) throws Exception {
 		Object value = getFieldValue(t, field);
 		if (value != null) {
 			if (field.getType().isEnum()) {
 				return Integer.toString(EnumFieldReflectUtil.getFieldEnumOrdinal(t, field));
-			} if(field.getType().equals(java.util.Date.class)){
-				//yyyy-MM-dd HH:mm:ss
-				return DateUtil.formatAll((java.util.Date)value);
-			}if(field.getType().equals(java.sql.Date.class)){
-				//yyyy-MM-dd
-				return DateUtil.format((java.sql.Date)value);
-			}else {
+			}
+			if (field.getType().equals(java.util.Date.class)) {
+				// yyyy-MM-dd HH:mm:ss.fff
+				return DateUtil.toTimestamp((java.util.Date) value).toString();
+			}
+			if (field.getType().equals(java.sql.Date.class)) {
+				// yyyy-MM-dd
+				return ((java.sql.Date) value).toString();
+			} else {
 				return value.toString();
 			}
 		} else {
