@@ -24,7 +24,7 @@ public interface CrudServiceInter {
 	 * @return pojo对象
 	 * @throws Exception
 	 */
-	<T> T selectByPrimaryKey(Class<T> clazz, Integer primaryValue) throws Exception;
+	<T> T selectByPrimaryKey(Class<T> clazz, Object primaryValue) throws Exception;
 
 	/**
 	 * 插入数据
@@ -53,6 +53,14 @@ public interface CrudServiceInter {
 	 */
 	<T> int insertSelective(T t) throws Exception;
 
+	/**
+	 * 批量插入
+	 * 
+	 * @param list
+	 *            数据集
+	 * @return 数据
+	 * @throws Exception
+	 */
 	<T> int insertBatch(List<T> list) throws Exception;
 
 	/**
@@ -69,7 +77,7 @@ public interface CrudServiceInter {
 	 *            主键值
 	 * @return 数据条数
 	 */
-	<T> int deleteByPrimaryKey(Class<T> clazz, String primaryValue);
+	<T> int deleteByPrimaryKey(Class<T> clazz, Object primaryValue);
 
 	/**
 	 * 删除

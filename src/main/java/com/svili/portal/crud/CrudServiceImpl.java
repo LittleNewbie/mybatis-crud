@@ -26,7 +26,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 	private GeneralDao dao;
 
 	@Override
-	public <T> T selectByPrimaryKey(Class<T> clazz, Integer primaryValue) throws Exception {
+	public <T> T selectByPrimaryKey(Class<T> clazz, Object primaryValue) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
@@ -48,7 +48,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 		Class<?> clazz = t.getClass();
 
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
-		Map<String, String> mapping = GeneralMapperReflectUtil.getFieldValueMappingExceptNull(t);
+		Map<String, Object> mapping = GeneralMapperReflectUtil.getFieldValueMappingExceptNull(t);
 
 		param.put("tableName", tableName);
 		param.put("columnValueMapping", mapping);
@@ -58,7 +58,16 @@ public class CrudServiceImpl implements CrudServiceInter {
 
 	@Override
 	public <T> int insert(T t) throws Exception {
-		return insertSelective(t);
+		Map<String, Object> param = new HashMap<String, Object>();
+
+		Class<?> clazz = t.getClass();
+
+		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
+		Map<String, Object> mapping = GeneralMapperReflectUtil.getFieldValueMappingExceptNull(t);
+
+		param.put("tableName", tableName);
+		param.put("columnValueMapping", mapping);
+		return dao.insert(param);
 	}
 
 	@Override
@@ -68,7 +77,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 		String tableName = "";
 		List<String> columns = new ArrayList<String>();
 
-		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> dataList = new ArrayList<Map<String, Object>>();
 
 		for (T t : list) {
 			if (tableName.equals("")) {
@@ -79,7 +88,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 				Class<?> clazz = t.getClass();
 				columns = GeneralMapperReflectUtil.getAllColumns(clazz);
 			}
-			Map<String, String> mapping = GeneralMapperReflectUtil.getAllFieldValueMapping(t);
+			Map<String, Object> mapping = GeneralMapperReflectUtil.getAllFieldValueMapping(t);
 			dataList.add(mapping);
 		}
 
@@ -91,7 +100,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 	}
 
 	@Override
-	public <T> int deleteByPrimaryKey(Class<T> clazz, String primaryValue) {
+	public <T> int deleteByPrimaryKey(Class<T> clazz, Object primaryValue) {
 		Map<String, Object> param = new HashMap<String, Object>();
 
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
@@ -126,9 +135,9 @@ public class CrudServiceImpl implements CrudServiceInter {
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
 		String primaryKey = GeneralMapperReflectUtil.getPrimaryKey(clazz);
 
-		Map<String, String> mapping = GeneralMapperReflectUtil.getAllFieldValueMapping(t);
+		Map<String, Object> mapping = GeneralMapperReflectUtil.getAllFieldValueMapping(t);
 
-		String primaryValue = mapping.get(primaryKey);
+		Object primaryValue = mapping.get(primaryKey);
 
 		mapping.remove(primaryKey);
 
@@ -149,9 +158,9 @@ public class CrudServiceImpl implements CrudServiceInter {
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
 		String primaryKey = GeneralMapperReflectUtil.getPrimaryKey(clazz);
 
-		Map<String, String> mapping = GeneralMapperReflectUtil.getFieldValueMappingExceptNull(t);
+		Map<String, Object> mapping = GeneralMapperReflectUtil.getFieldValueMappingExceptNull(t);
 
-		String primaryValue = mapping.get(primaryKey);
+		Object primaryValue = mapping.get(primaryKey);
 
 		mapping.remove(primaryKey);
 
