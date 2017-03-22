@@ -2,6 +2,7 @@ package com.svili.portal.pojo;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.ibatis.type.Alias;
 
@@ -9,40 +10,46 @@ import com.svili.portal.type.DataState;
 
 /**
  * 用户信息
- * <p>@Table和Id是必须的</p>
+ * <p>
+ * @Table和Id是必须的
+ * </p>
+ * 
  * @author svili
  * @date 2016年8月10日
  *
  */
 @Alias("User")
-@Table(name="user")
+@Table(name = "user")
 public class User {
-	
+
+	@Transient
+	private static final long serialVersionUID = -7788405797990662048L;
+
 	@Id
 	private Integer userId;
-	
+
 	private Integer deptId;
-	
+
 	private String userName;
-	
+
 	private String loginName;
-	
+
 	private String password;
-	
+
 	private String mobilePhone;
-	
+
 	private String officePhone;
-	
+
 	private String email;
-	
+
 	private String job;
-	
+
 	private Integer orderId;
-	
+
 	private DataState state;
-	
+
 	private java.util.Date createTime;
-	
+
 	private java.util.Date updateTime;
 
 	public User() {
@@ -128,8 +135,6 @@ public class User {
 		this.orderId = orderId;
 	}
 
-	
-
 	public DataState getState() {
 		return state;
 	}
@@ -137,7 +142,7 @@ public class User {
 	public void setState(DataState state) {
 		this.state = state;
 	}
-	
+
 	public java.util.Date getCreateTime() {
 		return createTime;
 	}

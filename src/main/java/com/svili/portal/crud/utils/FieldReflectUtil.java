@@ -2,10 +2,11 @@ package com.svili.portal.crud.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.util.ReflectionUtils;
 
-import com.svili.portal.crud.common.DateUtil;
 import com.svili.portal.crud.common.NumberUtil;
 
 /**
@@ -39,6 +40,11 @@ public class FieldReflectUtil {
 				int ordinal = NumberUtil.toInt((Number) value);
 				EnumFieldReflectUtil.setFieldEnumValueByOrdinal(t, field, ordinal);
 			}
+			// mysql tinyint(1)返回的是Boolean类型
+			if (value instanceof Boolean) {
+				int ordinal = (Boolean) value ? 1 : 0;
+				EnumFieldReflectUtil.setFieldEnumValueByOrdinal(t, field, ordinal);
+			}
 			return;
 		}
 		// Boolean类型字段处理
@@ -46,7 +52,8 @@ public class FieldReflectUtil {
 			if (value instanceof Number) {
 				boolean b = NumberUtil.toInt((Number) value) == 1;
 				field.set(t, b);
-			}else{
+			}
+			if (value instanceof Boolean) {
 				field.set(t, value);
 			}
 			return;
@@ -57,7 +64,7 @@ public class FieldReflectUtil {
 			NumberFieldReflectUtil.setFieldNumberValue(t, field, (Number) value);
 			return;
 		}
-		//Date类型字段处理
+		// Date类型字段处理
 		if (value instanceof java.util.Date) {
 			DateFieldReflectUtil.setFieldDateValue(t, field, (java.util.Date) value);
 			return;
@@ -92,45 +99,6 @@ public class FieldReflectUtil {
 	}
 
 	/**
-	 * 获取目标对象指定的字段值-String类型
-	 * <p>
-	 * 空值返回null
-	 * </p>
-	 * <p>
-	 * 枚举返回的是ordinal().toString()
-	 * </p>
-	 * 
-	 * @param t
-	 *            对象
-	 * @param field
-	 *            字段
-	 * @return value
-	 * @throws Exception
-	 *             IllegalArgumentException, IllegalAccessException
-	 */
-	@Deprecated
-	public static <T> String getFieldStringValue(T t, Field field) throws Exception {
-		Object value = getFieldValue(t, field);
-		if (value != null) {
-			if (field.getType().isEnum()) {
-				return Integer.toString(EnumFieldReflectUtil.getFieldEnumOrdinal(t, field));
-			}
-			if (field.getType().equals(java.util.Date.class)) {
-				// yyyy-MM-dd HH:mm:ss.fff
-				return DateUtil.toTimestamp((java.util.Date) value).toString();
-			}
-			if (field.getType().equals(java.sql.Date.class)) {
-				// yyyy-MM-dd
-				return ((java.sql.Date) value).toString();
-			} else {
-				return value.toString();
-			}
-		} else {
-			return null;
-		}
-	}
-
-	/**
 	 * 获取Pojo指定注解类型的字段
 	 * 
 	 * @param clazz
@@ -151,6 +119,28 @@ public class FieldReflectUtil {
 			searchType = searchType.getSuperclass();
 		}
 		return null;
+	}
+
+	/**
+	 * 获取所有字段</br>
+	 * 暂时无用
+	 * 
+	 * @param clazz
+	 *            class对象
+	 * @return
+	 */
+	@Deprecated
+	public static List<Field> getAllField(Class<?> clazz) {
+		List<Field> list = new ArrayList<Field>();
+		Class<?> searchType = clazz;
+		while (!Object.class.equals(searchType) && searchType != null) {
+			Field[] fields = searchType.getDeclaredFields();
+			for (Field field : fields) {
+				list.add(field);
+			}
+			searchType = searchType.getSuperclass();
+		}
+		return list;
 	}
 
 }

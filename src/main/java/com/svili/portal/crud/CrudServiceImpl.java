@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.svili.portal.crud.common.PersistentUtil;
 import com.svili.portal.crud.utils.GeneralMapperReflectUtil;
 import com.svili.portal.dao.GeneralDao;
 
@@ -29,8 +30,8 @@ public class CrudServiceImpl implements CrudServiceInter {
 	public <T> T selectByPrimaryKey(Class<T> clazz, Object primaryValue) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
-		String primaryKey = GeneralMapperReflectUtil.getPrimaryKey(clazz);
+		String tableName = PersistentUtil.getTableName(clazz);
+		String primaryKey = PersistentUtil.getPrimaryKey(clazz);
 		List<String> queryColumn = GeneralMapperReflectUtil.getAllColumns(clazz);
 
 		param.put("tableName", tableName);
@@ -47,8 +48,8 @@ public class CrudServiceImpl implements CrudServiceInter {
 
 		Class<?> clazz = t.getClass();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
-		Map<String, Object> mapping = GeneralMapperReflectUtil.getFieldValueMappingExceptNull(t);
+		String tableName = PersistentUtil.getTableName(clazz);
+		Map<String, Object> mapping = GeneralMapperReflectUtil.getColumnValueMappingExceptNull(t);
 
 		param.put("tableName", tableName);
 		param.put("columnValueMapping", mapping);
@@ -62,8 +63,8 @@ public class CrudServiceImpl implements CrudServiceInter {
 
 		Class<?> clazz = t.getClass();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
-		Map<String, Object> mapping = GeneralMapperReflectUtil.getFieldValueMappingExceptNull(t);
+		String tableName = PersistentUtil.getTableName(clazz);
+		Map<String, Object> mapping = GeneralMapperReflectUtil.getAllColumnValueMapping(t);
 
 		param.put("tableName", tableName);
 		param.put("columnValueMapping", mapping);
@@ -82,13 +83,13 @@ public class CrudServiceImpl implements CrudServiceInter {
 		for (T t : list) {
 			if (tableName.equals("")) {
 				Class<?> clazz = t.getClass();
-				tableName = GeneralMapperReflectUtil.getTableName(clazz);
+				tableName = PersistentUtil.getTableName(clazz);
 			}
 			if (columns.size() == 0) {
 				Class<?> clazz = t.getClass();
 				columns = GeneralMapperReflectUtil.getAllColumns(clazz);
 			}
-			Map<String, Object> mapping = GeneralMapperReflectUtil.getAllFieldValueMapping(t);
+			Map<String, Object> mapping = GeneralMapperReflectUtil.getAllColumnValueMapping(t);
 			dataList.add(mapping);
 		}
 
@@ -103,8 +104,8 @@ public class CrudServiceImpl implements CrudServiceInter {
 	public <T> int deleteByPrimaryKey(Class<T> clazz, Object primaryValue) {
 		Map<String, Object> param = new HashMap<String, Object>();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
-		String primaryKey = GeneralMapperReflectUtil.getPrimaryKey(clazz);
+		String tableName = PersistentUtil.getTableName(clazz);
+		String primaryKey = PersistentUtil.getPrimaryKey(clazz);
 
 		param.put("tableName", tableName);
 		param.put("primaryKey", primaryKey);
@@ -117,7 +118,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 	public <T> int deleteByCondition(Class<T> clazz, String conditionExp, Map<String, Object> conditionParam) {
 		Map<String, Object> param = new HashMap<String, Object>();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
+		String tableName = PersistentUtil.getTableName(clazz);
 
 		param.put("tableName", tableName);
 		param.put("conditionExp", conditionExp);
@@ -132,10 +133,10 @@ public class CrudServiceImpl implements CrudServiceInter {
 
 		Class<?> clazz = t.getClass();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
-		String primaryKey = GeneralMapperReflectUtil.getPrimaryKey(clazz);
+		String tableName = PersistentUtil.getTableName(clazz);
+		String primaryKey = PersistentUtil.getPrimaryKey(clazz);
 
-		Map<String, Object> mapping = GeneralMapperReflectUtil.getAllFieldValueMapping(t);
+		Map<String, Object> mapping = GeneralMapperReflectUtil.getAllColumnValueMapping(t);
 
 		Object primaryValue = mapping.get(primaryKey);
 
@@ -155,10 +156,10 @@ public class CrudServiceImpl implements CrudServiceInter {
 
 		Class<?> clazz = t.getClass();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
-		String primaryKey = GeneralMapperReflectUtil.getPrimaryKey(clazz);
+		String tableName = PersistentUtil.getTableName(clazz);
+		String primaryKey = PersistentUtil.getPrimaryKey(clazz);
 
-		Map<String, Object> mapping = GeneralMapperReflectUtil.getFieldValueMappingExceptNull(t);
+		Map<String, Object> mapping = GeneralMapperReflectUtil.getColumnValueMappingExceptNull(t);
 
 		Object primaryValue = mapping.get(primaryKey);
 
@@ -177,7 +178,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 			String conditionExp, Map<String, Object> conditionParam) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
+		String tableName = PersistentUtil.getTableName(clazz);
 
 		param.put("tableName", tableName);
 		param.put("columnValueMapping", columnValueMapping);
@@ -194,7 +195,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 
 		List<String> queryColumn = GeneralMapperReflectUtil.getAllColumns(clazz);
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
+		String tableName = PersistentUtil.getTableName(clazz);
 
 		param.put("queryColumn", queryColumn);
 		param.put("tableName", tableName);
@@ -231,7 +232,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 			throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 
-		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
+		String tableName = PersistentUtil.getTableName(clazz);
 
 		param.put("tableName", tableName);
 		param.put("queryColumn", queryParam.getQueryColumn());
