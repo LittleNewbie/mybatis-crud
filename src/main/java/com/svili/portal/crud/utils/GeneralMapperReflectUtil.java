@@ -20,7 +20,6 @@ public class GeneralMapperReflectUtil {
 
 	/**
 	 * 获取pojo对应table 的所有列名</br>
-	 * 下划线风格
 	 * 
 	 * @param clazz
 	 *            pojo类-class对象
@@ -37,7 +36,6 @@ public class GeneralMapperReflectUtil {
 
 	/**
 	 * 获取pojo对应table除主键外的所有列名</br>
-	 * 列名为下划线风格
 	 * 
 	 * @param clazz
 	 *            pojo类-class对象
@@ -59,10 +57,7 @@ public class GeneralMapperReflectUtil {
 	}
 
 	/**
-	 * 获取pojo除空值外的所有字段名-字段值mapping
-	 * <p>
-	 * 字段名为下划线风格
-	 * </p>
+	 * 获取pojo除空值外的所有列名-字段值mapping
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -89,7 +84,6 @@ public class GeneralMapperReflectUtil {
 
 	/**
 	 * 获取pojo对应table的所有列名-字段值mapping</br>
-	 * 列名为下划线风格</br>
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -115,7 +109,6 @@ public class GeneralMapperReflectUtil {
 
 	/**
 	 * 获取pojo对应table的 列名-字段值mapping</br>
-	 * 列名为下划线风格</br>
 	 * 
 	 * @param <T>
 	 *            pojo类
