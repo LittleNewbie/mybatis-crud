@@ -215,6 +215,6 @@ public class PersistentUtil {
 	 * @return
 	 */
 	public static boolean isPersistentField(Field field) {
-		return field.isAnnotationPresent(Transient.class);
+		return !field.isAnnotationPresent(Transient.class);
 	}
 }
