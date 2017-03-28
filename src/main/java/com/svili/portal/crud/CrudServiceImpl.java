@@ -32,7 +32,7 @@ public class CrudServiceImpl implements CrudServiceInter {
 
 		String tableName = PersistentUtil.getTableName(clazz);
 		String primaryKey = PersistentUtil.getPrimaryKey(clazz);
-		List<String> queryColumn = GeneralMapperReflectUtil.getAllColumns(clazz);
+		List<String> queryColumn = GeneralMapperReflectUtil.getAllColumnNames(clazz);
 
 		param.put("tableName", tableName);
 		param.put("primaryKey", primaryKey);
@@ -49,12 +49,12 @@ public class CrudServiceImpl implements CrudServiceInter {
 		Class<?> clazz = t.getClass();
 
 		String tableName = PersistentUtil.getTableName(clazz);
-		Map<String, Object> mapping = GeneralMapperReflectUtil.getColumnValueMappingExceptNull(t);
+		List<SQLColumn> SQLColumns = GeneralMapperReflectUtil.getSQLColumnsExceptNull(t);
 
 		param.put("tableName", tableName);
-		param.put("columnValueMapping", mapping);
+		param.put("SQLColumns", SQLColumns);
 
-		return dao.insertSelective(param);
+		return dao.insert(param);
 	}
 
 	@Override
@@ -64,10 +64,10 @@ public class CrudServiceImpl implements CrudServiceInter {
 		Class<?> clazz = t.getClass();
 
 		String tableName = PersistentUtil.getTableName(clazz);
-		Map<String, Object> mapping = GeneralMapperReflectUtil.getAllColumnValueMapping(t);
+		List<SQLColumn> SQLColumns = GeneralMapperReflectUtil.getAllSQLColumns(t);
 
 		param.put("tableName", tableName);
-		param.put("columnValueMapping", mapping);
+		param.put("SQLColumns", SQLColumns);
 		return dao.insert(param);
 	}
 
@@ -76,25 +76,25 @@ public class CrudServiceImpl implements CrudServiceInter {
 		Map<String, Object> param = new HashMap<String, Object>();
 
 		String tableName = "";
-		List<String> columns = new ArrayList<String>();
+		List<String> columnNames = new ArrayList<String>();
 
-		List<Map<String, Object>> dataList = new ArrayList<Map<String, Object>>();
+		List<List<SQLColumn>> dataList = new ArrayList<List<SQLColumn>>(list.size() + 1);
 
 		for (T t : list) {
 			if (tableName.equals("")) {
 				Class<?> clazz = t.getClass();
 				tableName = PersistentUtil.getTableName(clazz);
 			}
-			if (columns.size() == 0) {
+			if (columnNames.size() == 0) {
 				Class<?> clazz = t.getClass();
-				columns = GeneralMapperReflectUtil.getAllColumns(clazz);
+				columnNames = GeneralMapperReflectUtil.getAllColumnNames(clazz);
 			}
-			Map<String, Object> mapping = GeneralMapperReflectUtil.getAllColumnValueMapping(t);
-			dataList.add(mapping);
+			List<SQLColumn> SQLColumns = GeneralMapperReflectUtil.getAllSQLColumns(t);
+			dataList.add(SQLColumns);
 		}
 
 		param.put("tableName", tableName);
-		param.put("columns", columns);
+		param.put("columnNames", columnNames);
 		param.put("dataList", dataList);
 
 		return dao.insertBatch(param);
@@ -136,16 +136,14 @@ public class CrudServiceImpl implements CrudServiceInter {
 		String tableName = PersistentUtil.getTableName(clazz);
 		String primaryKey = PersistentUtil.getPrimaryKey(clazz);
 
-		Map<String, Object> mapping = GeneralMapperReflectUtil.getAllColumnValueMapping(t);
+		List<SQLColumn> SQLColumns = GeneralMapperReflectUtil.getSQLColumns(t,false,true);
 
-		Object primaryValue = mapping.get(primaryKey);
-
-		mapping.remove(primaryKey);
+		Object primaryValue = GeneralMapperReflectUtil.getPrimaryValue(t);
 
 		param.put("tableName", tableName);
 		param.put("primaryKey", primaryKey);
 		param.put("primaryValue", primaryValue);
-		param.put("columnValueMapping", mapping);
+		param.put("SQLColumns", SQLColumns);
 
 		return dao.updateByPrimaryKey(param);
 	}
@@ -159,20 +157,18 @@ public class CrudServiceImpl implements CrudServiceInter {
 		String tableName = PersistentUtil.getTableName(clazz);
 		String primaryKey = PersistentUtil.getPrimaryKey(clazz);
 
-		Map<String, Object> mapping = GeneralMapperReflectUtil.getColumnValueMappingExceptNull(t);
+		List<SQLColumn> SQLColumns = GeneralMapperReflectUtil.getSQLColumns(t,false,false);
 
-		Object primaryValue = mapping.get(primaryKey);
-
-		mapping.remove(primaryKey);
+		Object primaryValue = GeneralMapperReflectUtil.getPrimaryValue(t);
 
 		param.put("tableName", tableName);
 		param.put("primaryKey", primaryKey);
 		param.put("primaryValue", primaryValue);
-		param.put("columnValueMapping", mapping);
+		param.put("SQLColumns", SQLColumns);
 
 		return dao.updateByPrimaryKey(param);
 	}
-	
+
 	@Override
 	public <T> int updateByConditionSelective(Class<T> clazz, Map<String, Object> columnValueMapping,
 			String conditionExp, Map<String, Object> conditionParam) throws Exception {
@@ -188,34 +184,11 @@ public class CrudServiceImpl implements CrudServiceInter {
 		return dao.updateByConditionSelective(param);
 	}
 
-	@Deprecated
-	public <T> List<T> selectByCondition(Class<T> clazz, String conditionExp, Map<String, Object> conditionParam)
-			throws Exception {
-		Map<String, Object> param = new HashMap<String, Object>();
-
-		List<String> queryColumn = GeneralMapperReflectUtil.getAllColumns(clazz);
-
-		String tableName = PersistentUtil.getTableName(clazz);
-
-		param.put("queryColumn", queryColumn);
-		param.put("tableName", tableName);
-		param.put("conditionExp", conditionExp);
-		param.put("conditionParam", conditionParam);
-
-		List<Map<String, Object>> list = dao.selectAdvanced(param);
-		List<T> result = new ArrayList<T>();
-		for (Map<String, Object> mapping : list) {
-			result.add(GeneralMapperReflectUtil.parseToBean(mapping, clazz));
-		}
-
-		return result;
-	}
-
 	@Override
 	public <T> List<T> selectAdvanced(Class<T> clazz, GeneralQueryParam queryParam) throws Exception {
 		List<T> result = new ArrayList<T>();
 
-		queryParam.setQueryColumn(GeneralMapperReflectUtil.getAllColumns(clazz));
+		queryParam.setQueryColumn(GeneralMapperReflectUtil.getAllColumnNames(clazz));
 
 		List<Map<String, Object>> list = selectAdvancedByColumn(clazz, queryParam);
 
@@ -249,7 +222,5 @@ public class CrudServiceImpl implements CrudServiceInter {
 
 		return dao.selectAdvanced(param);
 	}
-
-	
 
 }

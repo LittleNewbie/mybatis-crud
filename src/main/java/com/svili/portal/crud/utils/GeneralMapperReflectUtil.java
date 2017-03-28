@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.svili.portal.crud.SQLColumn;
 import com.svili.portal.crud.common.PersistentUtil;
 
 /**
@@ -17,6 +18,15 @@ import com.svili.portal.crud.common.PersistentUtil;
  *
  */
 public class GeneralMapperReflectUtil {
+	
+	/**
+	 * 获取主键值
+	 * @param t pojo对象
+	 * @return
+	 */
+	public static <T> Object getPrimaryValue(T t) throws Exception{
+		return FieldReflectUtil.getFieldValue(t, PersistentUtil.getPrimaryField(t.getClass()));
+	}
 
 	/**
 	 * 获取pojo对应table 的所有列名</br>
@@ -25,7 +35,7 @@ public class GeneralMapperReflectUtil {
 	 *            pojo类-class对象
 	 * @return columnNames
 	 */
-	public static List<String> getAllColumns(Class<?> clazz) {
+	public static List<String> getAllColumnNames(Class<?> clazz) {
 		List<String> columnNames = new ArrayList<String>();
 		List<Field> fields = PersistentUtil.getPersistentFields(clazz);
 		for (Field field : fields) {
@@ -41,7 +51,7 @@ public class GeneralMapperReflectUtil {
 	 *            pojo类-class对象
 	 * @return columnNames
 	 */
-	public static List<String> getAllColumnsExceptPrimaryKey(Class<?> clazz) {
+	public static List<String> getColumnNamesExceptPrimaryKey(Class<?> clazz) {
 		List<String> columnNames = new ArrayList<String>();
 
 		Field primaryField = PersistentUtil.getPrimaryFieldNotCareNull(clazz);
@@ -81,6 +91,84 @@ public class GeneralMapperReflectUtil {
 
 		return mapping;
 	}
+	
+	public static <T> List<SQLColumn> getSQLColumnsExceptNull(T t) throws Exception{
+		List<SQLColumn> sqlColumns = new ArrayList<SQLColumn>();
+		List<Field> fields = PersistentUtil.getPersistentFields(t.getClass());
+
+		for (Field field : fields) {
+			Object fieldValue = FieldReflectUtil.getFieldValue(t, field);
+			if (fieldValue != null) {
+				SQLColumn sqlColumn = new SQLColumn();
+				sqlColumn.setColumnName(PersistentUtil.getColumnName(field));
+				Object value = FieldReflectUtil.getFieldValue(t, field);
+				sqlColumn.setColumnValue(value);
+				sqlColumn.adaptorJdpcType();
+				sqlColumns.add(sqlColumn);
+			}
+		}
+		return sqlColumns;
+	}
+	
+	public static <T> List<SQLColumn> getAllSQLColumns(T t) throws Exception {
+		List<SQLColumn> sqlColumns = new ArrayList<SQLColumn>();
+
+		List<Field> fields = PersistentUtil.getPersistentFields(t.getClass());
+
+		for (Field field : fields) {
+			SQLColumn sqlColumn = new SQLColumn();
+			sqlColumn.setColumnName(PersistentUtil.getColumnName(field));
+			Object value = FieldReflectUtil.getFieldValue(t, field);
+			sqlColumn.setColumnValue(value);
+			sqlColumn.adaptorJdpcType();
+			sqlColumns.add(sqlColumn);
+		}
+		return sqlColumns;
+	}
+	
+	public static <T> List<SQLColumn> getSQLColumns(T t, boolean isContainsPrimaryKey,
+			boolean isContainsNullValue) throws Exception {
+		List<SQLColumn> sqlColumns = new ArrayList<SQLColumn>();
+
+		List<Field> fields = PersistentUtil.getPersistentFields(t.getClass());
+
+		// 主键字段
+		Field primaryField = PersistentUtil.getPrimaryField(t.getClass());
+
+		if (!isContainsPrimaryKey && primaryField != null) {
+			// 不包含主键字段，移除
+			fields.remove(primaryField);
+		}
+
+		for (Field field : fields) {
+			// 字段值
+			Object fieldValue = FieldReflectUtil.getFieldValue(t, field);
+
+			if (fieldValue == null) {
+				// 空值
+				if (isContainsNullValue) {
+					// 包含空值 添加至结果集
+					SQLColumn sqlColumn = new SQLColumn();
+					sqlColumn.setColumnName(PersistentUtil.getColumnName(field));
+					sqlColumn.setColumnValue(fieldValue);
+					sqlColumn.adaptorJdpcType();
+					sqlColumns.add(sqlColumn);
+				}
+
+			} else {
+				// 非空值 直接添加至结果集
+				SQLColumn sqlColumn = new SQLColumn();
+				sqlColumn.setColumnName(PersistentUtil.getColumnName(field));
+				sqlColumn.setColumnValue(fieldValue);
+				sqlColumn.adaptorJdpcType();
+				sqlColumns.add(sqlColumn);
+			}
+
+		}
+
+		return sqlColumns;
+	}
+
 
 	/**
 	 * 获取pojo对应table的所有列名-字段值mapping</br>

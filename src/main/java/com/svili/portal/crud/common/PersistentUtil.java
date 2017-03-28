@@ -139,7 +139,7 @@ public class PersistentUtil {
 		Field primaryField = getPrimaryField(clazz);
 		return getColumnName(primaryField);
 	}
-
+	
 	/**
 	 * 根据列名获取字段</br>
 	 * 无匹配的字段抛异常

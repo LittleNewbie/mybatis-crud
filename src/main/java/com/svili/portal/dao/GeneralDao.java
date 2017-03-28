@@ -23,15 +23,13 @@ public interface GeneralDao {
 	
 	int deleteByCondition(Map<String,Object> param);
 	
-	@InsertProvider(type=GeneralDaoProvider.class,method="insertSelectiveSql")
 	int insert(Map<String,Object> param);
 	
+	@InsertProvider(type=GeneralDaoProvider.class,method="insertSelectiveSql")
 	int insertSelective(Map<String,Object> param);
 	
 	int insertBatch(Map<String,Object> param);
 	
-	int updateByPrimaryKeySelective(Map<String,Object> param);
-
     int updateByPrimaryKey(Map<String,Object> param);
     
     int updateByConditionSelective(Map<String,Object> param);

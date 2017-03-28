@@ -1,6 +1,7 @@
 package com.svili.portal.crud;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,7 @@ public class CrudTest {
 		user.setPassword("123456");
 		user.setState(DataState.UNEFFECT);
 		user.setUserName("svili");
+		user.setCreateTime(new Date());
 
 		int i = service.insertSelective(user);
 
@@ -77,6 +79,7 @@ public class CrudTest {
 		user.setPassword("123456"+i);
 		user.setState(DataState.UNEFFECT);
 		user.setUserName("svili"+i);
+		user.setCreateTime(new Date());
 		list.add(user);
 		}
 
@@ -104,6 +107,7 @@ public class CrudTest {
 		 */
 		user.setState(DataState.UNEFFECT);
 		user.setUserName("svili");
+		user.setCreateTime(new Date());
 
 		int i = service.updateByPrimaryKey(user);
 
@@ -128,6 +132,7 @@ public class CrudTest {
 		user.setPassword("123456");
 		user.setState(DataState.UNEFFECT);
 		user.setUserName("svili");
+		user.setCreateTime(new Date());
 
 		int i = service.updateByPrimaryKeySelective(user);
 

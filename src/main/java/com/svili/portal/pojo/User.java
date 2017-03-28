@@ -22,8 +22,8 @@ import com.svili.portal.type.DataState;
 @Table(name = "user")
 public class User {
 
-	@Transient
-	private static final long serialVersionUID = -7788405797990662048L;
+	//@Transient
+	//private static final long serialVersionUID = -7788405797990662048L;
 
 	@Id
 	private Integer userId;

@@ -27,10 +27,8 @@ public interface CrudServiceInter {
 	<T> T selectByPrimaryKey(Class<T> clazz, Object primaryValue) throws Exception;
 
 	/**
-	 * 插入数据
-	 * <p>
-	 * 实际调用insertSelective
-	 * </p>
+	 * 插入数据</br>
+	 * 包括null值
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -42,7 +40,8 @@ public interface CrudServiceInter {
 	<T> int insert(T t) throws Exception;
 
 	/**
-	 * 插入数据
+	 * 插入数据</br>
+	 * 不包括null值
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -54,7 +53,8 @@ public interface CrudServiceInter {
 	<T> int insertSelective(T t) throws Exception;
 
 	/**
-	 * 批量插入
+	 * 批量插入</br>
+	 * 包括null值
 	 * 
 	 * @param list
 	 *            数据集
@@ -64,10 +64,8 @@ public interface CrudServiceInter {
 	<T> int insertBatch(List<T> list) throws Exception;
 
 	/**
-	 * 删除
-	 * <p>
+	 * 删除 </br>
 	 * 根据主键删除
-	 * </p>
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -80,10 +78,8 @@ public interface CrudServiceInter {
 	<T> int deleteByPrimaryKey(Class<T> clazz, Object primaryValue);
 
 	/**
-	 * 删除
-	 * <p>
+	 * 删除 </br>
 	 * 根据条件删除
-	 * </p>
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -99,13 +95,9 @@ public interface CrudServiceInter {
 	<T> int deleteByCondition(Class<T> clazz, String conditionExp, Map<String, Object> conditionParam);
 
 	/**
-	 * 更新
-	 * <p>
-	 * 根据主键更新
-	 * </p>
-	 * <p>
+	 * 更新</br>
+	 * 根据主键更新</br>
 	 * 更新pojo的所有字段，包括空值(null值)字段
-	 * </p>
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -117,13 +109,9 @@ public interface CrudServiceInter {
 	<T> int updateByPrimaryKey(T t) throws Exception;
 
 	/**
-	 * 更新
-	 * <p>
-	 * 根据主键更新
-	 * </p>
-	 * <p>
+	 * 更新</br>
+	 * 根据主键更新</br>
 	 * 更新pojo的非空字段
-	 * </p>
 	 * 
 	 * @param <T>
 	 *            pojo类
@@ -135,13 +123,9 @@ public interface CrudServiceInter {
 	<T> int updateByPrimaryKeySelective(T t) throws Exception;
 
 	/**
-	 * 更新
-	 * <p>
-	 * 根据条件更新
-	 * </p>
-	 * <p>
+	 * 更新</br>
+	 * 根据条件更新</br>
 	 * 更新pojo的指定字段集
-	 * </p>
 	 * 
 	 * @param clazz
 	 *            pojo类-class对象
