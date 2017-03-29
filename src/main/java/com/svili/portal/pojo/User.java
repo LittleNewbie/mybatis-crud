@@ -1,5 +1,6 @@
 package com.svili.portal.pojo;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -22,8 +23,8 @@ import com.svili.portal.type.DataState;
 @Table(name = "user")
 public class User {
 
-	//@Transient
-	//private static final long serialVersionUID = -7788405797990662048L;
+	@Transient
+	private static final long serialVersionUID = -7788405797990662048L;
 
 	@Id
 	private Integer userId;

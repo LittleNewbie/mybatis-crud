@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.util.ReflectionUtils;
 
 import com.svili.portal.crud.common.NumberUtil;
+import com.svili.portal.crud.common.TypeCastUtil;
 
 /**
  * 反射工具类
@@ -22,7 +23,9 @@ import com.svili.portal.crud.common.NumberUtil;
 public class FieldReflectUtil {
 
 	/**
-	 * 设定目标对象指定的字段值
+	 * 设定目标对象指定的字段值</br>
+	 * oracle Number类型返回的是BigDecimal</br>
+	 * mysql tinyint(1)返回的是Boolean类型
 	 * 
 	 * @param t
 	 *            对象
@@ -33,40 +36,44 @@ public class FieldReflectUtil {
 	 */
 	public static <T> void setFieldValue(T t, Field field, Object value) throws Exception {
 		ReflectionUtils.makeAccessible(field);
+		
+		//空值处理
+		if(value == null){
+			field.set(t, null);
+			return;
+		}
+		
+		//基本数据类型 未完成
+		if(field.getType().isPrimitive()){
+			
+		}
+		
 		// Enum类型字段处理
 		if (field.getType().isEnum()) {
-			// oracle Number类型返回的是BigDecimal
-			if (value instanceof Number) {
-				int ordinal = NumberUtil.toInt((Number) value);
-				EnumFieldReflectUtil.setFieldEnumValueByOrdinal(t, field, ordinal);
-			}
-			// mysql tinyint(1)返回的是Boolean类型
-			if (value instanceof Boolean) {
-				int ordinal = (Boolean) value ? 1 : 0;
-				EnumFieldReflectUtil.setFieldEnumValueByOrdinal(t, field, ordinal);
-			}
+			//Enum类型的字段在数据库中存储其ordinal
+			Number number = TypeCastUtil.castToNumber(value);
+			int ordinal = NumberUtil.toInt(number);
+			EnumFieldReflectUtil.setFieldEnumValueByOrdinal(t, field, ordinal);
 			return;
 		}
+		
 		// Boolean类型字段处理
 		if (field.getType().equals(Boolean.class)) {
-			if (value instanceof Number) {
-				boolean b = NumberUtil.toInt((Number) value) == 1;
-				field.set(t, b);
-			}
-			if (value instanceof Boolean) {
-				field.set(t, value);
-			}
+			boolean b = TypeCastUtil.castToBoolean(value);
+			field.set(t, b);
 			return;
 		}
+		
 		// Number类型字段处理
-		if (value instanceof Number) {
+		if (Number.class.isAssignableFrom(field.getType())) {
 			// oracle中Number类型返回的是BigDecimal
 			NumberFieldReflectUtil.setFieldNumberValue(t, field, (Number) value);
 			return;
 		}
+		
 		// Date类型字段处理
-		if (value instanceof java.util.Date) {
-			DateFieldReflectUtil.setFieldDateValue(t, field, (java.util.Date) value);
+		if (java.util.Date.class.isAssignableFrom(field.getType())) {
+			DateFieldReflectUtil.setFieldDateValue(t, field, value);
 			return;
 		}
 		field.set(t, value);
@@ -99,7 +106,7 @@ public class FieldReflectUtil {
 	}
 
 	/**
-	 * 获取Pojo指定注解类型的字段
+	 * 获取class类中指定注解类型的field对象
 	 * 
 	 * @param clazz
 	 *            pojo类-class对象

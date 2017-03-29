@@ -48,13 +48,9 @@ public class PersistentUtil {
 				return table.name();
 			}
 		}
-		// 全限定名
-		String className = clazz.getName();
+		// 类名
+		String className = clazz.getSimpleName();
 
-		int index = className.lastIndexOf(".");
-		if (index != -1) {
-			className = className.substring(index + 1, className.length());
-		}
 		if (!CAMEL_TO_UNDERLINE) {
 			return className;
 		} else {

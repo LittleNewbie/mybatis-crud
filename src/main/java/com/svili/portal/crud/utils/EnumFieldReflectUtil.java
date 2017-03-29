@@ -27,15 +27,17 @@ public class EnumFieldReflectUtil {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static int getFieldEnumOrdinal(Object target, Field field) throws Exception {
-		if (field.getType().isEnum()) {
-			if (!field.isAccessible()) {
-				ReflectionUtils.makeAccessible(field);
-			}
-			return ((Enum) field.get(target)).ordinal();
-		} else {
+		
+		if (!field.getType().isEnum()) {
 			throw new ReflectionException(target.getClass().getName() + "." + field.getName()
 					+ ":field type is not Enum, can not convertToEnum");
 		}
+		
+		if (!field.isAccessible()) {
+			ReflectionUtils.makeAccessible(field);
+		}
+		
+		return ((Enum) field.get(target)).ordinal();
 	}
 
 	/**
@@ -52,21 +54,28 @@ public class EnumFieldReflectUtil {
 	 *             IllegalArgumentException, IllegalAccess
 	 */
 	@SuppressWarnings("rawtypes")
-	public static void setFieldEnumValueByOrdinal(Object target, Field field, int ordinal) throws Exception {
-		if (field.getType().isEnum()) {
-			if (!field.isAccessible()) {
-				ReflectionUtils.makeAccessible(field);
-			}
-			Enum[] enumObjs = (Enum[]) (field.getType()).getEnumConstants();
-			for (Enum enumObj : enumObjs) {
-				if (enumObj.ordinal() == ordinal) {
-					field.set(target, enumObj);
-				}
-			}
-		} else {
+	public static void setFieldEnumValueByOrdinal(Object target, Field field, Integer ordinal) throws Exception {
+		if (!field.getType().isEnum()) {
 			throw new ReflectionException(target.getClass().getName() + "." + field.getName()
-					+ ":field type is not Enum, can not convertToEnum");
+					+ " : field type is not Enum, can not convertToEnum");
 		}
+		
+		if (!field.isAccessible()) {
+			ReflectionUtils.makeAccessible(field);
+		}
+		
+		if(ordinal == null){
+			field.set(target, null);
+			return;
+		}
+
+		Enum[] enumObjs = (Enum[]) (field.getType()).getEnumConstants();
+		for (Enum enumObj : enumObjs) {
+			if (enumObj.ordinal() == ordinal) {
+				field.set(target, enumObj);
+			}
+		}
+
 	}
 
 }

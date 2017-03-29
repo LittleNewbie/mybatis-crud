@@ -4,6 +4,8 @@ package com.svili.portal.crud;
  * SQL字段对象</br>
  * java对象与jdbc转换</br>
  * Mybatis-insert update中Oracle.data类型对应的Java对象需要声明jdbcType=TIMESTAMP
+ * <p>
+ * 使用SQLColumn工厂(@see SQLColumnFactory)创建对象
  * 
  * @author svili
  * @data 2017年3月27日
@@ -39,16 +41,6 @@ public class SQLColumn {
 
 	public void setJdbcType(String jdbcType) {
 		this.jdbcType = jdbcType;
-	}
-
-	public String adaptorJdpcType() {
-		if (this.columnValue == null) {
-			return null;
-		}
-		if (this.columnValue instanceof java.util.Date) {
-			this.jdbcType = "TIMESTAMP";
-		}
-		return this.jdbcType;
 	}
 
 }

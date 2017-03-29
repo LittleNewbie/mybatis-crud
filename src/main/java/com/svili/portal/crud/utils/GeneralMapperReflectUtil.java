@@ -99,12 +99,7 @@ public class GeneralMapperReflectUtil {
 		for (Field field : fields) {
 			Object fieldValue = FieldReflectUtil.getFieldValue(t, field);
 			if (fieldValue != null) {
-				SQLColumn sqlColumn = new SQLColumn();
-				sqlColumn.setColumnName(PersistentUtil.getColumnName(field));
-				Object value = FieldReflectUtil.getFieldValue(t, field);
-				sqlColumn.setColumnValue(value);
-				sqlColumn.adaptorJdpcType();
-				sqlColumns.add(sqlColumn);
+				sqlColumns.add(SQLColumnFactory.createSQLColumn(t, field));
 			}
 		}
 		return sqlColumns;
@@ -116,12 +111,7 @@ public class GeneralMapperReflectUtil {
 		List<Field> fields = PersistentUtil.getPersistentFields(t.getClass());
 
 		for (Field field : fields) {
-			SQLColumn sqlColumn = new SQLColumn();
-			sqlColumn.setColumnName(PersistentUtil.getColumnName(field));
-			Object value = FieldReflectUtil.getFieldValue(t, field);
-			sqlColumn.setColumnValue(value);
-			sqlColumn.adaptorJdpcType();
-			sqlColumns.add(sqlColumn);
+			sqlColumns.add(SQLColumnFactory.createSQLColumn(t, field));
 		}
 		return sqlColumns;
 	}
@@ -148,20 +138,12 @@ public class GeneralMapperReflectUtil {
 				// 空值
 				if (isContainsNullValue) {
 					// 包含空值 添加至结果集
-					SQLColumn sqlColumn = new SQLColumn();
-					sqlColumn.setColumnName(PersistentUtil.getColumnName(field));
-					sqlColumn.setColumnValue(fieldValue);
-					sqlColumn.adaptorJdpcType();
-					sqlColumns.add(sqlColumn);
+					sqlColumns.add(SQLColumnFactory.createSQLColumn(t, field));
 				}
 
 			} else {
 				// 非空值 直接添加至结果集
-				SQLColumn sqlColumn = new SQLColumn();
-				sqlColumn.setColumnName(PersistentUtil.getColumnName(field));
-				sqlColumn.setColumnValue(fieldValue);
-				sqlColumn.adaptorJdpcType();
-				sqlColumns.add(sqlColumn);
+				sqlColumns.add(SQLColumnFactory.createSQLColumn(t, field));
 			}
 
 		}
