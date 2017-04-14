@@ -30,6 +30,10 @@ public class SQLColumnFactory {
 	}
 
 	public static String matchJdbcType(Class<?> fieldType) {
+		if(fieldType.isEnum()){
+			//枚举类型存ordinal
+			return "Integer";
+		}
 		if (String.class.equals(fieldType)) {
 			//CLOB未完成
 			return "VARCHAR";

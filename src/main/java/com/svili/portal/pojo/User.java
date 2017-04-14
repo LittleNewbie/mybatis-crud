@@ -35,6 +35,7 @@ public class User {
 
 	private String loginName;
 
+	@Column
 	private String password;
 
 	private String mobilePhone;

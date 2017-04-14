@@ -11,10 +11,7 @@ import com.svili.portal.crud.common.NumberUtil;
 import com.svili.portal.crud.common.TypeCastUtil;
 
 /**
- * 反射工具类
- * <p>
- * 字段
- * </p>
+ * Field反射工具类</br>
  * 
  * @author svili
  * @date 2016年11月17日
