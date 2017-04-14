@@ -1,4 +1,4 @@
-package com.svili.portal.crud.common;
+package com.svili.crud.mybatis.common;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

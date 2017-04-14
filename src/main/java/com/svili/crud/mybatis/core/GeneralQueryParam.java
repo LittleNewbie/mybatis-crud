@@ -1,4 +1,4 @@
-package com.svili.portal.crud;
+package com.svili.crud.mybatis.core;
 
 import java.util.List;
 import java.util.Map;

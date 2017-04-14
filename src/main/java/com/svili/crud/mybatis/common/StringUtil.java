@@ -1,6 +1,6 @@
-package com.svili.portal.crud.common;
+package com.svili.crud.mybatis.common;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * 字符串工具类
@@ -58,16 +58,16 @@ public class StringUtil {
 	}
 
 	/**
-	 * 将String list字符串集合用逗号","分割
+	 * 将集合用逗号","分割
 	 * 
-	 * @param list
+	 * @param collection
 	 *            集合
 	 * @return string
 	 */
-	public static String splitListByComma(List<String> list) {
+	public static String splitCollectionByComma(Collection<?> collection) {
 		StringBuffer result = new StringBuffer();
-		for (String str : list) {
-			result.append(",").append(str);
+		for (Object obj : collection) {
+			result.append(",").append(obj.toString());
 		}
 		return result.substring(1, result.length());
 	}
