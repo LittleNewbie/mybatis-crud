@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import org.apache.ibatis.reflection.ReflectionException;
 import org.springframework.util.ReflectionUtils;
 
-import com.svili.portal.crud.common.DateUtil;
+import com.svili.crud.mybatis.common.DateUtil;
 
 /**
  * 时间字段处理
@@ -58,7 +58,7 @@ public class DateFieldReflectUtil {
 			field.set(target, DateUtil.toTimestamp((java.util.Date) value));
 			return;
 		}
-		//其他Date类型 未完成
+		// 其他Date类型 未完成
 
 		field.set(target, value);
 	}

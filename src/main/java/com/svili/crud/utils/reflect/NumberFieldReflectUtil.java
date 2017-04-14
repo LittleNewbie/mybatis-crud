@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import org.apache.ibatis.reflection.ReflectionException;
 import org.springframework.util.ReflectionUtils;
 
-import com.svili.portal.crud.common.NumberUtil;
+import com.svili.crud.mybatis.common.NumberUtil;
 
 /**
  * 数值字段处理
@@ -38,19 +38,19 @@ public class NumberFieldReflectUtil {
 		if (!field.isAccessible()) {
 			ReflectionUtils.makeAccessible(field);
 		}
-		
-		if(value == null){
+
+		if (value == null) {
 			field.set(target, null);
 			return;
 		}
-		
-		if(!(value instanceof Number)){
+
+		if (!(value instanceof Number)) {
 			throw new ReflectionException(value + " : is not Number type value , can not convertToNumber to field "
 					+ target.getClass().getName() + "." + field.getName());
 		}
-		
-		Number number = (Number)value;
-		
+
+		Number number = (Number) value;
+
 		if (field.getType().equals(java.lang.Byte.class)) {
 			field.set(target, NumberUtil.toByte(number));
 			return;

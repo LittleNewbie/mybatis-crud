@@ -2,12 +2,13 @@ package com.svili.crud.mybatis.core;
 
 import java.lang.reflect.Field;
 
-import com.svili.portal.crud.common.PersistentUtil;
-import com.svili.portal.crud.utils.FieldReflectUtil;
+import com.svili.crud.mybatis.common.PersistentUtil;
+import com.svili.crud.utils.reflect.FieldReflectUtil;
 
 /**
  * 工厂方法</br>
  * 未完成
+ * 
  * @author svili
  * @data 2017年3月30日
  *
@@ -30,12 +31,12 @@ public class SQLColumnFactory {
 	}
 
 	public static String matchJdbcType(Class<?> fieldType) {
-		if(fieldType.isEnum()){
-			//枚举类型存ordinal
+		if (fieldType.isEnum()) {
+			// 枚举类型存ordinal
 			return "Integer";
 		}
 		if (String.class.equals(fieldType)) {
-			//CLOB未完成
+			// CLOB未完成
 			return "VARCHAR";
 		}
 		if (Integer.class.equals(fieldType) || Integer.TYPE.equals(fieldType)) {
@@ -50,7 +51,7 @@ public class SQLColumnFactory {
 		if (java.util.Date.class.isAssignableFrom(fieldType)) {
 			return "TIMESTAMP";
 		}
-		//CLOB BLOB未完成
+		// CLOB BLOB未完成
 		return null;
 	}
 

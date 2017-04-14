@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 
 import org.apache.ibatis.reflection.ReflectionException;
 
-import com.svili.portal.crud.utils.FieldReflectUtil;
+import com.svili.crud.utils.reflect.FieldReflectUtil;
 
 /**
  * 持久化工具类
@@ -135,7 +135,7 @@ public class PersistentUtil {
 		Field primaryField = getPrimaryField(clazz);
 		return getColumnName(primaryField);
 	}
-	
+
 	/**
 	 * 根据列名获取字段</br>
 	 * 无匹配的字段抛异常

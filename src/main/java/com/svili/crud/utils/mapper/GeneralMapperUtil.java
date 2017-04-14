@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.svili.crud.mybatis.common.PersistentUtil;
 import com.svili.crud.mybatis.core.SQLColumn;
 import com.svili.crud.mybatis.core.SQLColumnFactory;
 import com.svili.crud.utils.reflect.FieldReflectUtil;
-import com.svili.portal.crud.common.PersistentUtil;
 
 /**
  * 映射工具类
@@ -20,13 +20,15 @@ import com.svili.portal.crud.common.PersistentUtil;
  *
  */
 public class GeneralMapperUtil {
-	
+
 	/**
 	 * 获取主键值
-	 * @param t pojo对象
+	 * 
+	 * @param t
+	 *            pojo对象
 	 * @return
 	 */
-	public static <T> Object getPrimaryValue(T t) throws Exception{
+	public static <T> Object getPrimaryValue(T t) throws Exception {
 		return FieldReflectUtil.getFieldValue(t, PersistentUtil.getPrimaryField(t.getClass()));
 	}
 
@@ -93,8 +95,8 @@ public class GeneralMapperUtil {
 
 		return mapping;
 	}
-	
-	public static <T> List<SQLColumn> getSQLColumnsExceptNull(T t) throws Exception{
+
+	public static <T> List<SQLColumn> getSQLColumnsExceptNull(T t) throws Exception {
 		List<SQLColumn> sqlColumns = new ArrayList<SQLColumn>();
 		List<Field> fields = PersistentUtil.getPersistentFields(t.getClass());
 
@@ -106,7 +108,7 @@ public class GeneralMapperUtil {
 		}
 		return sqlColumns;
 	}
-	
+
 	public static <T> List<SQLColumn> getAllSQLColumns(T t) throws Exception {
 		List<SQLColumn> sqlColumns = new ArrayList<SQLColumn>();
 
@@ -117,9 +119,9 @@ public class GeneralMapperUtil {
 		}
 		return sqlColumns;
 	}
-	
-	public static <T> List<SQLColumn> getSQLColumns(T t, boolean isContainsPrimaryKey,
-			boolean isContainsNullValue) throws Exception {
+
+	public static <T> List<SQLColumn> getSQLColumns(T t, boolean isContainsPrimaryKey, boolean isContainsNullValue)
+			throws Exception {
 		List<SQLColumn> sqlColumns = new ArrayList<SQLColumn>();
 
 		List<Field> fields = PersistentUtil.getPersistentFields(t.getClass());
@@ -152,7 +154,6 @@ public class GeneralMapperUtil {
 
 		return sqlColumns;
 	}
-
 
 	/**
 	 * 获取pojo对应table的所有列名-字段值mapping</br>
