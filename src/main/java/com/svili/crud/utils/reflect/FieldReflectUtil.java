@@ -26,19 +26,19 @@ public class FieldReflectUtil {
 	 * oracle Number类型返回的是BigDecimal</br>
 	 * mysql tinyint(1)返回的是Boolean类型
 	 * 
-	 * @param t
+	 * @param target
 	 *            对象
 	 * @param field
 	 *            字段
 	 * @throws Exception
 	 *             IllegalArgumentException, IllegalAccessException
 	 */
-	public static <T> void setFieldValue(T t, Field field, Object value) throws Exception {
+	public static <T> void setFieldValue(T target, Field field, Object value) throws Exception {
 		ReflectionUtils.makeAccessible(field);
 		
 		//空值处理
 		if(value == null){
-			field.set(t, null);
+			field.set(target, null);
 			return;
 		}
 		
@@ -52,30 +52,30 @@ public class FieldReflectUtil {
 			//Enum类型的字段在数据库中存储其ordinal
 			Number number = TypeCastUtil.castToNumber(value);
 			int ordinal = NumberUtil.toInt(number);
-			EnumFieldReflectUtil.setFieldEnumValueByOrdinal(t, field, ordinal);
+			EnumFieldReflectUtil.setFieldEnumValueByOrdinal(target, field, ordinal);
 			return;
 		}
 		
 		// Boolean类型字段处理
 		if (field.getType().equals(Boolean.class)) {
 			boolean b = TypeCastUtil.castToBoolean(value);
-			field.set(t, b);
+			field.set(target, b);
 			return;
 		}
 		
 		// Number类型字段处理
 		if (Number.class.isAssignableFrom(field.getType())) {
 			// oracle中Number类型返回的是BigDecimal
-			NumberFieldReflectUtil.setFieldNumberValue(t, field, (Number) value);
+			NumberFieldReflectUtil.setFieldNumberValue(target, field, (Number) value);
 			return;
 		}
 		
 		// Date类型字段处理
 		if (java.util.Date.class.isAssignableFrom(field.getType())) {
-			DateFieldReflectUtil.setFieldDateValue(t, field, value);
+			DateFieldReflectUtil.setFieldDateValue(target, field, value);
 			return;
 		}
-		field.set(t, value);
+		field.set(target, value);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class FieldReflectUtil {
 	 * 空值返回null
 	 * </p>
 	 * 
-	 * @param t
+	 * @param target
 	 *            对象
 	 * @param field
 	 *            字段
@@ -92,16 +92,16 @@ public class FieldReflectUtil {
 	 * @throws Exception
 	 *             IllegalArgumentException, IllegalAccessException
 	 */
-	public static <T> Object getFieldValue(T t, Field field) throws Exception {
+	public static <T> Object getFieldValue(T target, Field field) throws Exception {
 		ReflectionUtils.makeAccessible(field);
-		if (field.get(t) == null) {
+		if (field.get(target) == null) {
 			return null;
 		}
 		// Enum类型字段处理
 		if (field.getType().isEnum()) {
-			return EnumFieldReflectUtil.getFieldEnumOrdinal(t, field);
+			return EnumFieldReflectUtil.getFieldEnumOrdinal(target, field);
 		}
-		return field.get(t);
+		return field.get(target);
 	}
 
 	/**

@@ -39,13 +39,29 @@ public class GeneralMapperUtil {
 	 *            pojo类-class对象
 	 * @return columnNames
 	 */
-	public static List<String> getAllColumnNames(Class<?> clazz) {
+	public static List<String> getAllColumnNameList(Class<?> clazz) {
 		List<String> columnNames = new ArrayList<String>();
 		List<Field> fields = PersistentUtil.getPersistentFields(clazz);
 		for (Field field : fields) {
 			columnNames.add(PersistentUtil.getColumnName(field));
 		}
 		return columnNames;
+	}
+	
+	/**
+	 * 获取pojo对应table 的所有列名</br>
+	 * 
+	 * @param clazz
+	 *            pojo类-class对象
+	 * @return columnNames
+	 */
+	public static String getAllColumnNames(Class<?> clazz) {
+		StringBuilder columnNames = new StringBuilder();
+		List<Field> fields = PersistentUtil.getPersistentFields(clazz);
+		for (Field field : fields) {
+			columnNames.append(",").append(PersistentUtil.getColumnName(field));
+		}
+		return columnNames.substring(1);
 	}
 
 	/**

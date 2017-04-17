@@ -17,13 +17,13 @@ import com.svili.crud.mybatis.common.NumberUtil;
 public class NumberFieldReflectUtil {
 
 	/**
-	 * 设置Date类型字段值
+	 * 设置Number类型字段值
 	 * 
 	 * @param target
 	 *            the target object from which to get the field
 	 * @param field
 	 *            the field to set
-	 * @param number
+	 * @param value
 	 *            java.lang.Number
 	 * @throws Exception
 	 *             IllegalArgumentException, IllegalAccess
@@ -50,7 +50,9 @@ public class NumberFieldReflectUtil {
 		}
 
 		Number number = (Number) value;
-
+		
+		// 不考虑基本数据类型
+		
 		if (field.getType().equals(java.lang.Byte.class)) {
 			field.set(target, NumberUtil.toByte(number));
 			return;

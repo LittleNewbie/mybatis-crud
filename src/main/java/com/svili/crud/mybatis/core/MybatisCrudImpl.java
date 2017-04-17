@@ -33,7 +33,7 @@ public class MybatisCrudImpl implements MybatisCrudInter {
 
 		String tableName = PersistentUtil.getTableName(clazz);
 		String primaryKey = PersistentUtil.getPrimaryKey(clazz);
-		List<String> queryColumn = GeneralMapperUtil.getAllColumnNames(clazz);
+		List<String> queryColumn = GeneralMapperUtil.getAllColumnNameList(clazz);
 
 		param.put("tableName", tableName);
 		param.put("primaryKey", primaryKey);
@@ -88,7 +88,7 @@ public class MybatisCrudImpl implements MybatisCrudInter {
 			}
 			if (columnNames.size() == 0) {
 				Class<?> clazz = t.getClass();
-				columnNames = GeneralMapperUtil.getAllColumnNames(clazz);
+				columnNames = GeneralMapperUtil.getAllColumnNameList(clazz);
 			}
 			List<SQLColumn> SQLColumns = GeneralMapperUtil.getAllSQLColumns(t);
 			dataList.add(SQLColumns);
@@ -189,7 +189,7 @@ public class MybatisCrudImpl implements MybatisCrudInter {
 	public <T> List<T> selectAdvanced(Class<T> clazz, GeneralQueryParam queryParam) throws Exception {
 		List<T> result = new ArrayList<T>();
 
-		queryParam.setQueryColumn(GeneralMapperUtil.getAllColumnNames(clazz));
+		queryParam.setQueryColumn(GeneralMapperUtil.getAllColumnNameList(clazz));
 
 		List<Map<String, Object>> list = selectAdvancedByColumn(clazz, queryParam);
 
