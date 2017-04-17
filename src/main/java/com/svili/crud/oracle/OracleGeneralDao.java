@@ -16,8 +16,6 @@ public interface OracleGeneralDao {
 
 	int insert(Map<String, Object> param);
 
-	int insertSelective(Map<String, Object> param);
-
 	int insertBatch(Map<String, Object> param);
 
 	int updateByPrimaryKey(Map<String, Object> param);

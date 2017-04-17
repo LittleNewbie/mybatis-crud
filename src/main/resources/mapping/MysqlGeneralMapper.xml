@@ -13,14 +13,14 @@
 		where ${primaryKey} = #{primaryValue}
 	</select>
 	
-	<insert id="insertSelective" parameterType="map">
+	<insert id="insert" parameterType="map">
 		insert into ${tableName}
-		<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+		<foreach item="columnValue" index="columnName" collection="columnValueMapper"
 			open="(" separator="," close=")">
 			${columnName}
 		</foreach>
 		values
-		<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+		<foreach item="columnValue" index="columnName" collection="columnValueMapper"
 			open="(" separator="," close=")">
 				#{columnValue}
 		</foreach>
@@ -59,7 +59,7 @@
 	<update id="updateByPrimaryKey">
 		update ${tableName}
 		<set>
-			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+			<foreach item="columnValue" index="columnName" collection="columnValueMapper"
 				separator=",">
 				${columnName} = #{columnValue}
 			</foreach>
@@ -70,7 +70,7 @@
 	<update id="updateByPrimaryKeySelective">
 		update ${tableName}
 		<set>
-			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+			<foreach item="columnValue" index="columnName" collection="columnValueMapper"
 				separator=",">
 				${columnName} = #{columnValue}
 			</foreach>
@@ -81,7 +81,7 @@
 	<update id="updateByConditionSelective">
 		update ${tableName}
 		<set>
-			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+			<foreach item="columnValue" index="columnName" collection="columnValueMapper"
 				separator=",">
 				${columnName} = #{columnValue}
 			</foreach>

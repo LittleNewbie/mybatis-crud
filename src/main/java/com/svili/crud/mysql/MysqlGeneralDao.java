@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("mysqlGeneralDao")
 public interface MysqlGeneralDao {
-	
+
 	Map<String, Object> selectByPrimaryKey(Map<String, Object> param);
 
 	int deleteByPrimaryKey(Map<String, Object> param);
@@ -15,8 +15,6 @@ public interface MysqlGeneralDao {
 	int deleteByCondition(Map<String, Object> param);
 
 	int insert(Map<String, Object> param);
-
-	int insertSelective(Map<String, Object> param);
 
 	int insertBatch(Map<String, Object> param);
 
