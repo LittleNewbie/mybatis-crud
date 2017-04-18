@@ -15,7 +15,7 @@
 	<mvc:annotation-driven />
 
 	<!-- 默认扫描的包路径 -->
-	<context:component-scan base-package="com.svili.portal" use-default-filters="false">
+	<context:component-scan base-package="com.svili" use-default-filters="false">
 		<!-- 扫描base-package外的controller -->
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
