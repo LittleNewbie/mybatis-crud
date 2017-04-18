@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.svili.crud.common.PersistentUtil;
 import com.svili.crud.mybatis.core.GeneralQueryParam;
-import com.svili.crud.mybatis.core.MybatisCrudInter;
+import com.svili.crud.mybatis.core.MybatisCrud;
 import com.svili.crud.mybatis.core.SQLColumn;
 import com.svili.crud.utils.mapper.GeneralMapperUtil;
 
@@ -23,7 +23,7 @@ import com.svili.crud.utils.mapper.GeneralMapperUtil;
  *
  */
 @Service("oracleCrud")
-public class OracleCrudImpl implements MybatisCrudInter {
+public class OracleCrudImpl implements MybatisCrud {
 
 	@Resource(name = "oracleGeneralDao")
 	private OracleGeneralDao dao;

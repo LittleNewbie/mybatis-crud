@@ -10,22 +10,11 @@
                         http://www.springframework.org/schema/aop  
                         http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-
-	<!-- 默认扫描的包路径 -->
-	<context:component-scan base-package="com.svili">
-		<!-- 不扫描带有Controller注解的类 -->
-		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Controller" />
-	</context:component-scan>
-
-	<!-- ASPECTJ注解 proxy-target-class="true" -->
-	<aop:aspectj-autoproxy />
-
 	<!-- 数据库连接池 -->
-	<bean id="propertyConfigurer"
+	<!-- <bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:configs/db.properties" />
-	</bean>
+	</bean> -->
 
 	<!-- 数据源 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -49,15 +38,15 @@
 	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		扫描mybatis配置文件
+		<!-- 扫描mybatis配置文件 -->
 		<property name="configLocation" value="classpath:configs/mybatis-config.xml" />
-		自动扫描mapping.xml文件
+		<!-- 自动扫描mapping.xml文件 -->
 		<property name="mapperLocations" value="classpath:mapping/*.xml"></property>
 	</bean>
 
 	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.svili.portal.dao" />
+		<property name="basePackage" value="com.svili" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
 

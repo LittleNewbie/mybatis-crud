@@ -10,7 +10,7 @@ import java.util.Map;
  * @date 2016年11月11日
  *
  */
-public interface MybatisCrudInter {
+public interface MybatisCrud {
 
 	/**
 	 * 根据主键查询

@@ -15,16 +15,18 @@ import com.svili.crud.utils.mapper.GeneralMapperUtil;
 
 
 /**
- * 通用Crud 数据访问层接口实现类
+ * 通用Crud 数据访问层接口实现类</br>
+ * 预期能够自动识别数据库驱动类型,整合mysql oracle</br>
+ * 未实现</br>
  * 
  * @author svili
  * @date 2016年11月11日
  *
  */
-@Service("mybatisCrud")
-public class MybatisCrudImpl implements MybatisCrudInter {
+//@Service("mybatisCrud")
+public class MybatisCrudImpl implements MybatisCrud {
 
-	@Resource(name = "mybatisGeneralDao")
+	//@Resource(name = "mybatisGeneralDao")
 	private MybatisGeneralDao dao;
 
 	@Override

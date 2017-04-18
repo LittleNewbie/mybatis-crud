@@ -67,12 +67,12 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:configs/spring-servlet.xml</param-value>
+			<param-value>classpath:configs/spring-mvc.xml</param-value>
 		</init-param>
 		<!-- 启动tomcat时启动springMVC(加载servlet) -->
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<!-- 设置dispatchservlet的匹配模式，通过把dispatchservlet映射到/，默认servlet会处理所有的请求，包括静态资源 -->
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
@@ -81,7 +81,7 @@
 		<url-pattern>*.page</url-pattern>
 		<url-pattern>*.json</url-pattern>
 	</servlet-mapping>
-	
+
 
 	<!-- 日志记录 -->
 	<context-param>
@@ -98,10 +98,14 @@
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
 
-	<!-- Spring 配置 -->
-	<!-- Spring监听器 -->
+	<!-- Spring初始化监听器 -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<!-- Spring web请求监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
 
 	<!-- 防止Spring内存溢出监听器 -->
@@ -110,10 +114,10 @@
 	</listener>
 
 	<!-- 业务层， 持久层的bean放在父容器中applicationContext.xml， 这样可以被所有展现层共享； -->
-	<!-- 展现层的bean(controller)放在各自servlet的spring容器中,spring mvc配置 -->
+	<!-- springContext(spring上下文) -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:configs/spring-mybatis.xml</param-value>
+		<param-value>classpath:configs/spring.xml</param-value>
 	</context-param>
 
 </web-app>  

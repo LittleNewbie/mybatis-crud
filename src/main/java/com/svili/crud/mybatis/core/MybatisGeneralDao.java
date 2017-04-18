@@ -3,11 +3,18 @@ package com.svili.crud.mybatis.core;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-
-@Repository("mybatisGeneralDao")
+/**
+ * mybatis通用CRUD数据访问层接口标准</br>
+ * mysql oracle 通用CRUD数据访问层接口定义与此类相同</br>
+ * 通过mapper.xml区分其dao差异
+ * 
+ * @author svili
+ * @data 2017年4月18日
+ *
+ */
+// @Repository("mybatisGeneralDao")
 public interface MybatisGeneralDao {
-	
+
 	Map<String, Object> selectByPrimaryKey(Map<String, Object> param);
 
 	int deleteByPrimaryKey(Map<String, Object> param);
