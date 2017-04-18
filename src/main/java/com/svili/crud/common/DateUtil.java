@@ -13,6 +13,9 @@ import java.util.Date;
  */
 public class DateUtil {
 
+	public static final SimpleDateFormat DEFAULT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public static final SimpleDateFormat SIMPLE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
 	/**
 	 * 普通格式化：yyyy-MM-dd
 	 * 
@@ -34,8 +37,7 @@ public class DateUtil {
 	 * 
 	 */
 	public static String formatSimple(long time) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		return simpleDateFormat.format(time);
+		return SIMPLE_FORMAT.format(time);
 	}
 
 	/**
@@ -59,8 +61,7 @@ public class DateUtil {
 	 * 
 	 */
 	public static String format(long time) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return simpleDateFormat.format(time);
+		return DEFAULT_FORMAT.format(time);
 	}
 
 	/**
@@ -69,8 +70,8 @@ public class DateUtil {
 	 * @param exp
 	 *            表达式
 	 */
-	public static String format(String exp) {
-		return format(System.currentTimeMillis(), exp);
+	public static String format(String pattern) {
+		return format(System.currentTimeMillis(), pattern);
 	}
 
 	/**
@@ -79,8 +80,8 @@ public class DateUtil {
 	 * @param exp
 	 *            表达式
 	 */
-	public static String format(Date date, String exp) {
-		return format(date.getTime(), exp);
+	public static String format(Date date, String pattern) {
+		return format(date.getTime(), pattern);
 	}
 
 	/**
@@ -89,8 +90,8 @@ public class DateUtil {
 	 * @param exp
 	 *            表达式
 	 */
-	public static String format(long time, String exp) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(exp);
+	public static String format(long time, String pattern) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		return simpleDateFormat.format(time);
 	}
 

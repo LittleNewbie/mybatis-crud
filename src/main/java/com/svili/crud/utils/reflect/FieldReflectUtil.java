@@ -10,8 +10,6 @@ import org.springframework.util.ReflectionUtils;
 import com.svili.crud.common.NumberUtil;
 import com.svili.crud.common.TypeCastUtil;
 
-
-
 /**
  * Field反射工具类</br>
  * 
@@ -35,41 +33,41 @@ public class FieldReflectUtil {
 	 */
 	public static <T> void setFieldValue(T target, Field field, Object value) throws Exception {
 		ReflectionUtils.makeAccessible(field);
-		
-		//空值处理
-		if(value == null){
+
+		// 基本数据类型
+		if (field.getType().isPrimitive()) {
+			PrimitiveReflectUtil.setFieldPrimitiveValue(target, field, value);
+		}
+
+		// 空值处理
+		if (value == null) {
 			field.set(target, null);
 			return;
 		}
-		
-		//基本数据类型 未完成
-		if(field.getType().isPrimitive()){
-			
-		}
-		
+
 		// Enum类型字段处理
 		if (field.getType().isEnum()) {
-			//Enum类型的字段在数据库中存储其ordinal
+			// Enum类型的字段在数据库中存储其ordinal
 			Number number = TypeCastUtil.castToNumber(value);
 			int ordinal = NumberUtil.toInt(number);
 			EnumFieldReflectUtil.setFieldEnumValueByOrdinal(target, field, ordinal);
 			return;
 		}
-		
+
 		// Boolean类型字段处理
 		if (field.getType().equals(Boolean.class)) {
 			boolean b = TypeCastUtil.castToBoolean(value);
 			field.set(target, b);
 			return;
 		}
-		
+
 		// Number类型字段处理
 		if (Number.class.isAssignableFrom(field.getType())) {
 			// oracle中Number类型返回的是BigDecimal
 			NumberFieldReflectUtil.setFieldNumberValue(target, field, (Number) value);
 			return;
 		}
-		
+
 		// Date类型字段处理
 		if (java.util.Date.class.isAssignableFrom(field.getType())) {
 			DateFieldReflectUtil.setFieldDateValue(target, field, value);
