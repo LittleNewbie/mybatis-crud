@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.svili.crud.mybatis.common.PersistentUtil;
+import com.svili.crud.common.PersistentUtil;
 import com.svili.crud.utils.mapper.GeneralMapperUtil;
 
 @Repository("jdbcGeneralDao")
@@ -33,7 +33,7 @@ public class JdbcGeneralDaoImpl implements JdbcGeneralDao {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put(primaryKey, primaryValue);
 
-		GeneralMapper<T> rowMapper = new GeneralMapper<T>(clazz);
+		GeneralRowMapper<T> rowMapper = new GeneralRowMapper<T>(clazz);
 
 		return jdbcTemplate.queryForObject(SQL.toString(), paramMap, rowMapper);
 	}

@@ -67,18 +67,7 @@
 		where ${primaryKey} = #{primaryValue}
 	</update>
 
-	<update id="updateByPrimaryKeySelective">
-		update ${tableName}
-		<set>
-			<foreach item="columnValue" index="columnName" collection="columnValueMapper"
-				separator=",">
-				${columnName} = #{columnValue}
-			</foreach>
-		</set>
-		where ${primaryKey} = #{primaryValue}
-	</update>
-
-	<update id="updateByConditionSelective">
+	<update id="updateByCondition">
 		update ${tableName}
 		<set>
 			<foreach item="columnValue" index="columnName" collection="columnValueMapper"

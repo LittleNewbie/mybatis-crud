@@ -20,7 +20,7 @@ public interface MybatisGeneralDao {
 
 	int updateByPrimaryKey(Map<String, Object> param);
 
-	int updateByConditionSelective(Map<String, Object> param);
+	int updateByCondition(Map<String, Object> param);
 
 	List<Map<String, Object>> selectAdvanced(Map<String, Object> param);
 }

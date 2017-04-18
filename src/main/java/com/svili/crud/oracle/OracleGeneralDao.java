@@ -5,6 +5,15 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+/**
+ * oracle general dao</br>
+ * oracle SQL返回的列名为大写</br>
+ * oracle insert/update语句中,Date类型变量需要指定jdbcType</br>
+ * oracle batchInsert语句需要特殊处理,大批量数据不建议采用此方式</br>
+ * @author svili
+ * @data 2017年4月18日
+ *
+ */
 @Repository("oracleGeneralDao")
 public interface OracleGeneralDao {
 
@@ -20,7 +29,7 @@ public interface OracleGeneralDao {
 
 	int updateByPrimaryKey(Map<String, Object> param);
 
-	int updateByConditionSelective(Map<String, Object> param);
+	int updateByCondition(Map<String, Object> param);
 
 	List<Map<String, Object>> selectAdvanced(Map<String, Object> param);
 }

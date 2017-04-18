@@ -1,4 +1,4 @@
-package com.svili.crud.mybatis.common;
+package com.svili.crud.common;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

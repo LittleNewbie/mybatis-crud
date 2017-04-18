@@ -7,13 +7,13 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.svili.crud.mybatis.common.PersistentUtil;
+import com.svili.crud.common.PersistentUtil;
 
-public class GeneralMapper<T> implements RowMapper<T> {
+public class GeneralRowMapper<T> implements RowMapper<T> {
 
 	private Class<T> clazz;
 
-	public GeneralMapper(Class<T> clazz) {
+	public GeneralRowMapper(Class<T> clazz) {
 		this.clazz = clazz;
 	}
 

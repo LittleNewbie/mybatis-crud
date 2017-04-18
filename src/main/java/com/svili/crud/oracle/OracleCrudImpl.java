@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.svili.crud.mybatis.common.PersistentUtil;
+import com.svili.crud.common.PersistentUtil;
 import com.svili.crud.mybatis.core.GeneralQueryParam;
 import com.svili.crud.mybatis.core.MybatisCrudInter;
 import com.svili.crud.mybatis.core.SQLColumn;
@@ -151,7 +151,7 @@ public class OracleCrudImpl implements MybatisCrudInter {
 	}
 
 	@Override
-	public <T> int updateByPrimaryKeySelective(T t) throws Exception {
+	public <T> int updateSelectiveByPrimaryKey(T t) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 
 		Class<?> clazz = t.getClass();
@@ -172,7 +172,7 @@ public class OracleCrudImpl implements MybatisCrudInter {
 	}
 
 	@Override
-	public <T> int updateByConditionSelective(Class<T> clazz, Map<String, Object> columnValueMapping,
+	public <T> int updateSelectiveByCondition(Class<T> clazz, Map<String, Object> columnValueMapping,
 			String conditionExp, Map<String, Object> conditionParam) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 
@@ -183,7 +183,7 @@ public class OracleCrudImpl implements MybatisCrudInter {
 		param.put("conditionExp", conditionExp);
 		param.put("conditionParam", conditionParam);
 
-		return dao.updateByConditionSelective(param);
+		return dao.updateByCondition(param);
 	}
 
 	@Override

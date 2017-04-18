@@ -120,7 +120,7 @@ public interface MybatisCrudInter {
 	 * @return 数据条数
 	 * @throws Exception
 	 */
-	<T> int updateByPrimaryKeySelective(T t) throws Exception;
+	<T> int updateSelectiveByPrimaryKey(T t) throws Exception;
 
 	/**
 	 * 更新</br>
@@ -139,7 +139,7 @@ public interface MybatisCrudInter {
 	 * @return 数据条数
 	 * @throws Exception
 	 */
-	<T> int updateByConditionSelective(Class<T> clazz, Map<String, Object> columnValueMapping, String conditionExp,
+	<T> int updateSelectiveByCondition(Class<T> clazz, Map<String, Object> columnValueMapping, String conditionExp,
 			Map<String, Object> conditionParam) throws Exception;
 
 	/**

@@ -1,4 +1,4 @@
-package com.svili.crud.mybatis.common;
+package com.svili.crud.common;
 
 /**
  * 类型识别工具类

@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import org.apache.ibatis.reflection.ReflectionException;
 import org.springframework.util.ReflectionUtils;
 
-import com.svili.crud.mybatis.common.NumberUtil;
+import com.svili.crud.common.NumberUtil;
 
 /**
  * 数值字段处理

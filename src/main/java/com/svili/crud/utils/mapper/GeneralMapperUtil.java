@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.svili.crud.mybatis.common.PersistentUtil;
+import com.svili.crud.common.PersistentUtil;
 import com.svili.crud.mybatis.core.SQLColumn;
 import com.svili.crud.mybatis.core.SQLColumnFactory;
 import com.svili.crud.utils.reflect.FieldReflectUtil;

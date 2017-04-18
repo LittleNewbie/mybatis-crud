@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.springframework.util.ReflectionUtils;
 
-import com.svili.crud.mybatis.common.NumberUtil;
-import com.svili.crud.mybatis.common.TypeCastUtil;
+import com.svili.crud.common.NumberUtil;
+import com.svili.crud.common.TypeCastUtil;
 
 
 

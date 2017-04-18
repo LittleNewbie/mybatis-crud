@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<<<<<<< HEAD
 <mapper namespace="com.svili.crud.oracle.OracleGeneralDao">
 
 	<select id="selectByPrimaryKey" parameterType="map" resultType="hashmap">
@@ -32,73 +31,29 @@
 		</foreach>
 	</insert>
 
+	<!-- insert into TABLE_NAME t (COLUMN_NAME_1, COLUMN_NAME_2, COLUMN_NAME_3) 
+		( (select VALUE_1,VALUE_2,VALUE_3 from dual) union all (select VALUE_1,VALUE_2,VALUE_3 
+		from dual) ); -->
 	<insert id="insertBatch" parameterType="map">
 		insert into ${tableName}
 		<foreach item="columnName" index="index" collection="columnNames"
 			open="(" separator="," close=")">
 			${columnName}
 		</foreach>
-		values
+
 		<foreach item="SQLColumns" index="rowIndex" collection="dataList"
-			separator=",">
-			<foreach item="SQLColumn" index="columnIndex" collection="SQLColumns"
-				open="(" separator="," close=")">
-=======
-<mapper namespace="com.svili.portal.dao.GeneralDao">
+			open="(" separator=" union all " close=")">
 
-	<select id="selectByPrimaryKey" parameterType="map" resultType="hashmap">
-		select
-		<foreach item="columnName" index="index" collection="queryColumn"
-			separator=",">
-			${columnName}
-		</foreach>
-		from ${tableName}
-		where ${primaryKey} = #{primaryValue}
-	</select>
-
-	<insert id="insert" parameterType="map">
-		insert into ${tableName}
-		<foreach item="item" index="index" collection="SQLColumns"
-			open="(" separator="," close=")">
-			${item.columnName}
-		</foreach>
-		values
-		<foreach item="item" index="index" collection="SQLColumns"
-			open="(" separator="," close=")">
-			<if test="item.jdbcType == null">
-				#{item.columnValue}
-			</if>
-			<if test="item.jdbcType != null">
-				#{item.columnValue,jdbcType=${item.jdbcType} }
-			</if>
-		</foreach>
-	</insert>
-
-<!-- insert into TABLE_NAME t
-  (COLUMN_NAME_1, COLUMN_NAME_2, COLUMN_NAME_3)
-  (
-  (select VALUE_1,VALUE_2,VALUE_3 from dual) union all
-   (select VALUE_1,VALUE_2,VALUE_3 from dual)
-   ); -->
-	<insert id="insertBatch" parameterType="map">
-		insert into ${tableName}
-		<foreach item="columnName" index="index" collection="columnNames"
-			open="(" separator="," close=")">
-			${columnName}
-		</foreach>
-		
-		<foreach item="SQLColumns" index="rowIndex" collection="dataList"
-			 open="(" separator=" union all " close=")">
-			 select 
 			<foreach item="SQLColumn" index="columnIndex" collection="SQLColumns"
 				open="(select " separator="," close=" from dual)">
->>>>>>> refs/remotes/origin/v1.0.1
+
 				<if test="SQLColumn.jdbcType == null">
 					#{SQLColumn.columnValue}
 				</if>
 				<if test="SQLColumn.jdbcType != null">
 					#{SQLColumn.columnValue,jdbcType=${SQLColumn.jdbcType} }
 				</if>
+
 			</foreach>
 		</foreach>
 	</insert>
@@ -135,7 +90,7 @@
 		where ${primaryKey} = #{primaryValue}
 	</update>
 
-	<update id="updateByConditionSelective">
+	<update id="updateByCondition">
 		update ${tableName}
 		<set>
 			<foreach item="columnValue" index="columnName" collection="columnValueMapping"

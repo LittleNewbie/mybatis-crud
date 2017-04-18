@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 import org.springframework.util.ReflectionUtils;
 
-import com.svili.crud.mybatis.common.PersistentUtil;
+import com.svili.crud.common.PersistentUtil;
 import com.svili.crud.utils.reflect.DateFieldReflectUtil;
 import com.svili.crud.utils.reflect.EnumFieldReflectUtil;
 import com.svili.crud.utils.reflect.NumberFieldReflectUtil;
@@ -22,7 +22,8 @@ import com.svili.crud.utils.reflect.PrimitiveReflectUtil;
 public class ResulsetMapperUtil {
 
 	public static <T> void setFieldValue(T target, Field field, ResultSet rs) throws Exception {
-		String columnName = PersistentUtil.getColumnName(field);
+		//oracle 返回的字段名大写
+		String columnName = PersistentUtil.getColumnName(field).toUpperCase();
 
 		if (!field.isAccessible()) {
 			ReflectionUtils.makeAccessible(field);

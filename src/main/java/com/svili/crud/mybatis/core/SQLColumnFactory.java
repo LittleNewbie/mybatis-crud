@@ -2,7 +2,7 @@ package com.svili.crud.mybatis.core;
 
 import java.lang.reflect.Field;
 
-import com.svili.crud.mybatis.common.PersistentUtil;
+import com.svili.crud.common.PersistentUtil;
 import com.svili.crud.utils.reflect.FieldReflectUtil;
 
 /**

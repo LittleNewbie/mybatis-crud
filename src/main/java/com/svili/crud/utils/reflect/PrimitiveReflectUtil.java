@@ -5,8 +5,8 @@ import java.lang.reflect.Field;
 import org.apache.ibatis.reflection.ReflectionException;
 import org.springframework.util.ReflectionUtils;
 
-import com.svili.crud.mybatis.common.NumberUtil;
-import com.svili.crud.mybatis.common.TypeCastUtil;
+import com.svili.crud.common.NumberUtil;
+import com.svili.crud.common.TypeCastUtil;
 
 /**
  * 基本数据类型
