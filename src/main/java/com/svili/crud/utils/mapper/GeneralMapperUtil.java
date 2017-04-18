@@ -266,7 +266,7 @@ public class GeneralMapperUtil {
 		for (Entry<String, Object> entry : mapping.entrySet()) {
 
 			// oracle返回的columnName为大写
-			String columnName = entry.getKey().toLowerCase();
+			String columnName = entry.getKey();
 
 			Field field = PersistentUtil.getFieldByColumnName(clazz, columnName);
 

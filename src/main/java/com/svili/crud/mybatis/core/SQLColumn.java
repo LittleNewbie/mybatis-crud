@@ -5,7 +5,8 @@ package com.svili.crud.mybatis.core;
  * java对象与jdbc转换</br>
  * Mybatis-insert update中Oracle.data类型对应的Java对象需要声明jdbcType=TIMESTAMP
  * <p>
- * 使用SQLColumn工厂(@see SQLColumnFactory)创建对象
+ * 请使用SQLColumnFactory(@see SQLColumnFactory)创建对象
+ * </p>
  * 
  * @author svili
  * @data 2017年3月27日

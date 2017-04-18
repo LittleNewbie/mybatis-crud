@@ -7,7 +7,7 @@ import com.svili.crud.utils.reflect.FieldReflectUtil;
 
 /**
  * 工厂方法</br>
- * 未完成
+ * 待完善
  * 
  * @author svili
  * @data 2017年3月30日
@@ -33,11 +33,15 @@ public class SQLColumnFactory {
 	public static String matchJdbcType(Class<?> fieldType) {
 		if (fieldType.isEnum()) {
 			// 枚举类型存ordinal
-			return "Integer";
+			return "INTEGER";
 		}
-		if (String.class.equals(fieldType)) {
+		if (java.sql.Clob.class.equals(fieldType)) {
 			// CLOB未完成
-			return "VARCHAR";
+			return "CLOB";
+		}
+		if (java.sql.Blob.class.equals(fieldType)) {
+			// CLOB未完成
+			return "BLOB";
 		}
 		if (Integer.class.equals(fieldType) || Integer.TYPE.equals(fieldType)) {
 			return "INTEGER";

@@ -61,6 +61,7 @@ public class PersistentUtil {
 
 	/**
 	 * 获取列名</br>
+	 * 为适应ORACLE 返回的列名为大写,此处统一将列名设置为大写.</br>
 	 * 注解优先，javax.persistence.Column name属性值。</br>
 	 * 无注解,将字段名转为字符串,默认下划线风格.</br>
 	 * 
@@ -74,13 +75,13 @@ public class PersistentUtil {
 			Column column = field.getAnnotation(Column.class);
 			// 设置了name属性
 			if (!column.name().trim().equals("")) {
-				return column.name();
+				return column.name().toUpperCase();
 			}
 		}
 		if (!CAMEL_TO_UNDERLINE) {
 			return field.getName();
 		} else {
-			return StringUtil.camelToUnderline(field.getName());
+			return StringUtil.camelToUnderline(field.getName()).toUpperCase();
 		}
 	}
 

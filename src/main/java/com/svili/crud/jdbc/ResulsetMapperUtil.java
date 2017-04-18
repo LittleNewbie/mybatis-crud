@@ -23,7 +23,7 @@ public class ResulsetMapperUtil {
 
 	public static <T> void setFieldValue(T target, Field field, ResultSet rs) throws Exception {
 		//oracle 返回的字段名大写
-		String columnName = PersistentUtil.getColumnName(field).toUpperCase();
+		String columnName = PersistentUtil.getColumnName(field);
 
 		if (!field.isAccessible()) {
 			ReflectionUtils.makeAccessible(field);
